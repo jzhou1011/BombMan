@@ -6,25 +6,25 @@ module bomberman(
 );
 
     input [7:0] JA;
-	input clk;
-	input btnR;
-	input btnS;
+    input clk;
+    input btnR;
+    input btnS;
     input btnL;
-	input btnU;
+    input btnU;
     input btnD;
 
-	output [7:0] seg;
-	output [3:0] an;
+    output [7:0] seg;
+    output [3:0] an;
 
     // player1: use keypad to control character
-    wire playerAinput;
+    wire playerAinput;  
 
     // player2: use buttons to control character
     wire btnS_crt;
-	wire btnR_crt;
+    wire btnR_crt;
     wire btnL_crt;
-	wire btnU_crt;
-    wire btnD_crt;
+    wire btnU_crt;
+    wire btnD_crt;  
 
     // character status
     reg [1:0] playerAhealth = 1;
@@ -34,15 +34,12 @@ module bomberman(
     reg [1:0] arena [9:0][9:0];
     reg [1:0] bombs [9:0][9:0];
     // TODO: initialize?
-    
+
     // clock divider
-	wire bomb_clk; // 1 Hz
-	wire vga_clk; // 500 Hz
+    wire bomb_clk; // 1 Hz
+    wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
     // wire move_clk; use Debouncer instead
-
-    // seven segment display
-    wire [7:0] seven_o;
 
     // clocks
     clock_select clock_selector_(
