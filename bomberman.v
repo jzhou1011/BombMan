@@ -30,10 +30,9 @@ module bomberman(
     reg [1:0] playerAhealth = 1;
     reg [1:0] playerBhealth = 1;
 
-    // arena and bombs
-    // reg [1:0] Arena [0:9]
-    // reg [1:0] bombs [0:9]
-
+    // arena and bombs status
+    reg [1:0] arena [9:0][9:0];
+    reg [1:0] bombs [9:0][9:0];
     
     // read player1 input from keypad
     keypad keypad_(
@@ -83,6 +82,10 @@ module bomberman(
 	    //output
 	    .btn_crt	(btnD_crt)
     );
+
+    
+
+
 
 
 
