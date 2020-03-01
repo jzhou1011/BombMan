@@ -1,6 +1,6 @@
 module bomberman(
     //output
-    seg, an, // VGA!
+    seg, an, // TODO: VGA!
     //input
     clk, JA, btnS, btnR, btnL, btnD, btnU
 );
@@ -13,8 +13,8 @@ module bomberman(
 	input btnU;
     input btnD;
 
-	output reg [7:0] seg;
-	output reg [3:0] an;
+	output [7:0] seg;
+	output [3:0] an;
 
     // player1: use keypad to control character
     wire playerAinput;
@@ -33,11 +33,30 @@ module bomberman(
     // arena and bombs status
     reg [1:0] arena [9:0][9:0];
     reg [1:0] bombs [9:0][9:0];
+    // TODO: initialize?
     
+    // clock divider
+	wire bomb_clk; // 1 Hz
+	wire vga_clk; // 500 Hz
+    wire faster_clk; // seven segment display
+    // wire move_clk; use Debouncer instead
+
+    // seven segment display
+    wire [7:0] seven_o;
+
+    // clocks
+    clock_select clock_selector_(
+	    .clk		(clk),
+	    .bomb_clk	(bomb_clk),
+	    .vga_clk	(vga_clk),
+        .faster_clk (faster_clk)
+    );
+
     // read player1 input from keypad
     keypad keypad_(
         .clk    (clk),
-        .JA     (JA),
+        .row    (JA[7:4]),
+	    .col    (JA[3:0]),
         .decode (playerAinput)
     );
 
@@ -53,7 +72,7 @@ module bomberman(
 
     debouncing debounce_R( 
 	    //input
-	    .btn		(btnS),
+	    .btn		(btnR),
 	    .the_clk	(clk),
 	    //output
 	    .btn_crt	(btnR_crt)
@@ -61,7 +80,7 @@ module bomberman(
 
     debouncing debounce_L( 
 	    //input
-	    .btn		(btnS),
+	    .btn		(btnL),
 	    .the_clk	(clk),
 	    //output
 	    .btn_crt	(btnL_crt)
@@ -69,7 +88,7 @@ module bomberman(
 
     debouncing debounce_U( 
 	    //input
-	    .btn		(btnS),
+	    .btn		(btnU),
 	    .the_clk	(clk),
 	    //output
 	    .btn_crt	(btnU_crt)
@@ -77,11 +96,46 @@ module bomberman(
 
     debouncing debounce_D( 
 	    //input
-	    .btn		(btnS),
+	    .btn		(btnD),
 	    .the_clk	(clk),
 	    //output
 	    .btn_crt	(btnD_crt)
     );
+
+    movement movement_(
+        .btnS       (btnS_crt),
+        .btnD       (btnD_crt),
+        .btnR       (btnR_crt),
+        .btnL       (btnL_crt),
+        .btnU       (btnU_crt),
+        .playerA    (playerAinput),
+        .arena_map  (arena),
+        .bomb_map   (bombs)
+    );
+
+    bombTimer bombTimer_(
+        .bomb_clk   (bomb_clk),
+        .arena_map  (arena),
+        .bomb_map   (bombs)
+    );
+
+    sevenSeg sevenSeg_(
+        .healthA    (playerAhealth), 
+        .healthB    (playerBhealth), 
+        .clk        (faster_clk),
+        .seg        (seg), 
+        .an         (an)
+    );
+
+    // VGA
+
+endmodule
+
+
+
+
+
+
 
     
 

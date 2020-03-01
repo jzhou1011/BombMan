@@ -1,7 +1,8 @@
 module keypad(
     // input
     clk,
-    JA,
+    row,
+	col,
     // output
     decode
     );
@@ -9,16 +10,12 @@ module keypad(
     // input row(JA[7:4]);
 	// input col(JA[3:0]);
     input clk;				// 100MHz onboard clock
-    input [7:0] JA;	
+	input reg [3:0] row;
+	input reg [3:0] col;
     output reg [3:0] decode;	// Output data
-	
-	// Output wires and registers
-    reg [3:0] row
-	reg [3:0] col;
 	
 	// Count register
 	reg [19:0] sclk;
-
 
 	always @(posedge clk) begin
 

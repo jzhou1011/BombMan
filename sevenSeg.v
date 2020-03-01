@@ -2,7 +2,7 @@
 // Outputs seg and an for 7-segment display
 module sevenSeg(
     // Inputs
-    healthA, healthB, clk
+    healthA, healthB, clk,
     // Outputs
     seg, an
 );
