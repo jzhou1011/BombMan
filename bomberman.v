@@ -17,7 +17,7 @@ module bomberman(
     output [3:0] an;
 
     // player1: use keypad to control character
-    wire playerAinput;  
+    wire [3:0] playerAinput;  
 
     // player2: use buttons to control character
     wire btnS_crt;
@@ -42,11 +42,12 @@ module bomberman(
     // wire move_clk; use Debouncer instead
 
     // clocks
-    clock_select clock_selector_(
+    clockDivider clockDivider_(
 	    .clk		(clk),
-	    .bomb_clk	(bomb_clk),
-	    .vga_clk	(vga_clk),
-        .faster_clk (faster_clk)
+        .rst        (0),
+	    .oneHzClock	(bomb_clk),
+	    .VGAClock	(vga_clk),
+        .segClock (faster_clk)
     );
 
     // read player1 input from keypad
@@ -99,21 +100,30 @@ module bomberman(
 	    .btn_crt	(btnD_crt)
     );
 
-    movement movement_(
-        .btnS       (btnS_crt),
-        .btnD       (btnD_crt),
-        .btnR       (btnR_crt),
-        .btnL       (btnL_crt),
-        .btnU       (btnU_crt),
-        .playerA    (playerAinput),
-        .arena_map  (arena),
-        .bomb_map   (bombs)
+    chara_control chara_control_(
+        .Up         (btnU_crt),
+	    .Down       (btnD_crt),
+	    .Left       (btnL_crt),
+	    .Right      (btnR_crt),
+        .Center     (btnS_crt),
+	    .playerA    (playerAinput),
+        .Arena      (arena),
+	    .Bomb       (bombs),
+        .clk        (clk),
+	    .crt_Arena  (arena),
+	    .crt_Bomb   (bombs)
     );
 
-    bombTimer bombTimer_(
-        .bomb_clk   (bomb_clk),
-        .arena_map  (arena),
-        .bomb_map   (bombs)
+    bomb bomb_(
+        .updatedBombMap (bombs), 
+        .o_healthA      (healthA), 
+        .o_healthB      (healthB),
+        .curBombMap     (bombs), 
+        .curArena       (arena), 
+        .healthA        (healthA), 
+        .healthB        (healthB), 
+        .bombClk        (bomb_clk), 
+        .rst            (0)
     );
 
     sevenSeg sevenSeg_(
@@ -127,25 +137,5 @@ module bomberman(
     // VGA
 
 endmodule
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
 
 

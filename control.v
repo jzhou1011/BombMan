@@ -4,13 +4,9 @@ module chara_control(
 	input Left,
 	input Right,
 	
-	input two,
-	input eight,
-	input four,
-	input six,
+	input [3:0] playerA,
 	
 	input Center,
-	input five,
 	
 	input [1:0] Arena [0:9][0:9],
 	input [1:0] Bomb [0:9][0:9],
@@ -26,8 +22,8 @@ module chara_control(
 	reg [3:0] crt_position_2 [0:1] = 0;
 	reg [3:0] temp [0:1] = 0;
 	
-	reg [1:0] temp_Arena [0:9][0:9],
-	reg [1:0] temp_Bomb [0:9][0:9],
+	reg [1:0] temp_Arena [0:9][0:9];
+	reg [1:0] temp_Bomb [0:9][0:9];
 	
 	reg i,j;
 	
@@ -105,7 +101,7 @@ module chara_control(
 	
 	
 	always @ (posedge clk) begin
-		if (two) begin
+		if (playerA == 4'b0010) begin // 2
 			temp[0] = crt_position_2[0] - 1;
 			temp[1] = crt_position_2[1];
 			if (temp[0] >= 0 and Arena[temp[0]][temp[1]] == 0 and Bomb[temp[0]][temp[1]] == 0) 
@@ -115,7 +111,7 @@ module chara_control(
 			end
 		end
 		
-		if (eight) begin
+		if (playerA == 4'b1000) begin // 8
 			temp[0] = crt_position_2[0] + 1;
 			temp[1] = crt_position_2[1];
 			if (temp[0] <= 9 and Arena[temp[0]][temp[1]] == 0 and Bomb[temp[0]][temp[1]] == 0) 
@@ -125,7 +121,7 @@ module chara_control(
 			end
 		end
 		
-		if (four) begin
+		if (playerA == 4'b0100) begin // 4
 			temp[0] = crt_position_2[0];
 			temp[1] = crt_position_2[1] - 1;
 			if (temp[1] >= 0 and Arena[temp[0]][temp[1]] == 0 and Bomb[temp[0]][temp[1]] == 0) 
@@ -135,7 +131,7 @@ module chara_control(
 			end
 		end
 		
-		if (six) begin
+		if (playerA == 4'b0110) begin // 6
 			temp[0] = crt_position_2[0];
 			temp[1] = crt_position_2[1] + 1;
 			if (temp[1] <= 9 and Arena[temp[0]][temp[1]] == 0 and Bomb[temp[0]][temp[1]] == 0) 
@@ -145,7 +141,7 @@ module chara_control(
 			end
 		end
 		
-		if (five) begin
+		if (playerA == 4'b0101) begin // 5
 			if (Bomb[crt_position_2[0]][crt_position_2[1]] == 0) 
 			begin
 				Bomb[crt_position_2[0]][crt_position_2[1]] = 3;
