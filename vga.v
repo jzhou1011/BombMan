@@ -101,7 +101,7 @@ begin
 	begin
 		for(j = 0, j <= 479, j = j + 1)
 		begin
-			modulus_i = i % 48;
+			modulus_i = i % 64;
 			modulus_j = j % 48;
 			
 			pixel_array[i][j] = Arena[modulus_i][modulus_j];
