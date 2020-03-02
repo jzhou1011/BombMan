@@ -1,294 +1,213 @@
 `timescale 1ns / 1ps
 
-// ============================================================================== 
-// 										  Define Module
-// ==============================================================================
-module top_module(
-	// joystick
-	input clk,
-	input rst,
-	input hs, // highscore signal
-	input hs_rst, // highscore reset
-	input MISO,
-	//SW,
-	output wire SS,
-	output wire MOSI,
-	output wire SCLK,
-	
-	// seven-segment display
-	output wire [7:0] Led,
-	output wire [3:0] AN,
-	output wire [6:0] SEG,
-
-	// VGA
-	output wire [2:0] red,	//red vga output - 3 bits
-	output wire [2:0] green,//green vga output - 3 bits
-	output wire [1:0] blue,	//blue vga output - 2 bits
+module vga640x480(
+	input wire pixel_clk,			//pixel clock: 25MHz
+	input wire rst,			//asynchronous reset
+	input wire [10:0] d_x,
+	input wire [10:0] d_y,
+	input wire [9:0] p1_vpos, // platform 1 vertical position
+	input wire [9:0] p2_vpos,
+	input wire [9:0] p3_vpos,
+	input wire [9:0] p4_vpos,
+	input wire [9:0] p5_vpos,
+	input wire [9:0] p6_vpos,
+	input wire [9:0] p7_vpos,
+	input wire [9:0] p1_hpos, // platform 1 horizontal position
+	input wire [9:0] p2_hpos,
+	input wire [9:0] p3_hpos,
+	input wire [9:0] p4_hpos,
+	input wire [9:0] p5_hpos,
+	input wire [9:0] p6_hpos,
+	input wire [9:0] p7_hpos,
+	input wire terminated,
+	input wire [6:0] is_power,
 	output wire hsync,		//horizontal sync out
-	output wire vsync			//vertical sync out
+	output wire vsync,		//vertical sync out
+	output reg [2:0] red,	//red vga output
+	output reg [2:0] green, //green vga output
+	output reg [1:0] blue	//blue vga output
 	);
 
-	// ===========================================================================
-	// 							  Parameters, Regsiters, and Wires
-	// ===========================================================================
+// video structure constants
+parameter hpixels = 800;// horizontal pixels per line
+parameter vlines = 521; // vertical lines per frame
+parameter hpulse = 96; 	// hsync pulse length
+parameter vpulse = 2; 	// vsync pulse length
+parameter hbp = 325; 	// end of horizontal back porch
+parameter hfp = 625; 	// beginning of horizontal front porch
+parameter vbp = 31; 		// end of vertical back porch
+parameter vfp = 511; 	// beginning of vertical front porch
 
-			// Holds data to be sent to PmodJSTK
-			wire [7:0] sndData;
+// active horizontal video is therefore: 784 - 144 = 640
+// active vertical video is therefore: 511 - 31 = 480
+reg [9:0] hc;
+reg [9:0] vc;
 
-			// Signal to send/receive data to/from PmodJSTK
-			wire sndRec;
+always @(posedge pixel_clk or posedge rst)
+begin
+	// reset condition
+	if (rst == 1)
+	begin
+		hc <= 0;
+		vc <= 0;
+	end
+	else
+	begin
+		if (hc < hpixels - 1)
+			hc <= hc + 1;
+		else
 
-			// Data read from PmodJSTK
-			wire [39:0] jstkData;
-
-			// Signal carrying output data that user selected
-			wire [9:0] posData;
-
-	// ===========================================================================
-	// 										Implementation
-	// ===========================================================================
-
-
-			//-----------------------------------------------
-			//  	  			PmodJSTK Interface
-			//-----------------------------------------------
-			PmodJSTK PmodJSTK_Int(
-					.CLK(clk),
-					.RST(rst),
-					.sndRec(sndRec),
-					.DIN(sndData),
-					.MISO(MISO),
-					.SS(SS),
-					.SCLK(SCLK),
-					.MOSI(MOSI),
-					.DOUT(jstkData)
-			);
-
-			//-----------------------------------------------
-			//  			 Send Receive Generator
-			//-----------------------------------------------
-			ClkDiv_5Hz genSndRec(
-					.CLK(clk),
-					.RST(rst),
-					.CLKOUT(sndRec)
-			);
-			
-			// Use state of switch 0 to select output of X position or Y position data to SSD
-			assign posData = {jstkData[25:24], jstkData[39:32]};
-
-	// Clocks
-	wire pixel_clk;
-	wire doodle_clk;
-	wire platform_clk;
-	wire points_clk;
-	wire gravity_clk;
-	
-	wire rst_signal;
-	wire hs_rst_signal;
-	wire hs_signal;
-	
-	debouncer rst_debouncer (
-		.clk(clk),
-		.button(rst),
-		.button_state(rst_signal)
-	);
-	
-	debouncer hs_rst_debouncer(
-		.clk(clk),
-		.button(hs_rst),
-		.button_state(hs_rst_signal)
-	);
-	
-	debouncer hs_debouncer (
-		.clk(clk),
-		.button(hs),
-		.button_state(hs_signal)
-	);
-
-	wire power_signal;
-
-	//Create the different clocks
-	clockdiv divider(
-		.clk(clk),
-		.rst(rst_signal),
-		.power_signal(power_signal),
-		.pixel_clk(pixel_clk),
-		.doodle_clk(doodle_clk),
-		.platform_clk(platform_clk),
-		.points_clk(points_clk),
-		.gravity_clk(gravity_clk)
-		);
+		begin
+			hc <= 0;
+			if (vc < vlines - 1)
+				vc <= vc + 1;
+			else
+				vc <= 0;
+		end
 		
-	//Lower left position of the doodle square
-	wire [9:0] doo_x;
-	wire [9:0] doo_y;
-	
-	//Vertical Positions for Platforms - These move upwards
-	wire [9:0] p1_vpos; 
-	wire [9:0] p2_vpos;
-	wire [9:0] p3_vpos;
-	wire [9:0] p4_vpos;
-	wire [9:0] p5_vpos;
-	wire [9:0] p6_vpos;
-	wire [9:0] p7_vpos;
-	
-	//Horizontal Positions for Platforms - These are randomized
-	wire [9:0] p1_hpos;
-	wire [9:0] p2_hpos;
-	wire [9:0] p3_hpos;
-	wire [9:0] p4_hpos;
-	wire [9:0] p5_hpos;
-	wire [9:0] p6_hpos;
-	wire [9:0] p7_hpos;
-	
-	//The horizontal position that is randomly set
-	wire [9:0] new_hpos; 
-	//Points
-	wire terminated;	
-	wire [31:0] points;
+	end
+end
+assign hsync = (hc < hpulse) ? 0:1;
+assign vsync = (vc < vpulse) ? 0:1;
 
-	points points_mod (
-		.clk(points_clk),
-		.rst(rst_signal),
-		.hs_rst(hs_rst_signal),
-		.d_y(doo_y),
-		.terminated(terminated),
-		.points(points)
-	);
+parameter doodleSize = 20;
 
-	wire [31:0] highscore;
-	
-	high_score highscore_mod (
-		.clk(clk),
-		.rst(hs_rst_signal),
-		.points(points),
-		.highscore(highscore)	
-	);
+/*
+* Block Height is 20 pixels
+* Block Length is 75 pixels
+* Vertical Spacing is 50 pixels
+* Horizontal Spacing is 50 pixels
+*/
 
-	wire [31:0] value_to_display;
+localparam height = 20;
+localparam width = 75;
 
-	// select whether to display points or highscore, depending on push button	
-	select_display_value display_mux (
-		.clk(clk),
-		.hs(hs_signal),
-		.points(points),
-		.highscore(highscore),
-		.val(value_to_display)
-	);
-	
-	ssdCtrl points_display(
-			.CLK(clk),
-			.RST(rst_signal),
-			.DIN(value_to_display),
-			.AN(AN),
-			.SEG(SEG)
-	);
+always @(*)
+begin
 
-	//Generate random number for the random horizontal block
-	lfsr_rand_generator rand_mod1 (
-		.clk(clk),
-		.rst(rst_signal),
-		.rand_hpos(new_hpos)
-	);
-	
-	wire [9:0] power_rand;
-	
-	// random generator for gold block
-	lfsr_rand_generator power_rand_mod (
-		.clk(clk),
-		.rst(rst_signal),
-		.rand_hpos(power_rand)
-	);
-	
-	// determines which platform is a power block.
-	wire [6:0] is_power;
+	// first check if we're within vertical active video range
+	if (vc >= vbp && vc <= vfp)
+	begin
+		if(hc <= hbp || hc >= hfp) begin
+			red = 3'b111;
+			green = 0;
+			blue = 0;
+		end
+		// platfom 1
+		else if ( vc >= p1_vpos && vc <= p1_vpos + height && hc >= p1_hpos && hc <= p1_hpos + width ) begin
+			if (is_power[0]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 2
+		else if ( vc >= p2_vpos && vc <= p2_vpos + height && hc >= p2_hpos && hc <= p2_hpos + width ) begin
+			if (is_power[1]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 3
+		else if ( vc >= p3_vpos && vc <= p3_vpos + height && hc >= p3_hpos && hc <= p3_hpos + width ) begin
+			if (is_power[2]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 4
+		else if ( vc >= p4_vpos && vc <= p4_vpos + height && hc >= p4_hpos && hc <= p4_hpos + width ) begin
+			if (is_power[3]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 5
+		else if ( vc >= p5_vpos && vc <= p5_vpos + height && hc >= p5_hpos && hc <= p5_hpos + width ) begin
+				if (is_power[4]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 6
+		else if ( vc >= p6_vpos && vc <= p6_vpos + height && hc >= p6_hpos && hc <= p6_hpos + width ) begin
+				if (is_power[5]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
+		// platform 7
+		else if ( vc >= p7_vpos && vc <= p7_vpos + height && hc >= p7_hpos && hc <= p7_hpos + width ) begin
+			if (is_power[6]) begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b00;
+			end
+			else begin
+				red = 3'b111;
+				green = 3'b111;
+				blue = 2'b11;
+			end
+		end
 
-	//Set up the platforms in their positions, and for the blocks to move upwards
-	platforms platforms_mod (
-		.platform_clk(platform_clk),
-		.rst(rst_signal),
-		.new_hpos(new_hpos),
-		.terminated(terminated),
-		.power_rand_in(power_rand),
-		.p1_vpos(p1_vpos),
-		.p2_vpos(p2_vpos),
-		.p3_vpos(p3_vpos),
-		.p4_vpos(p4_vpos),
-		.p5_vpos(p5_vpos),
-		.p6_vpos(p6_vpos),
-		.p7_vpos(p7_vpos),
-		.p1_hpos(p1_hpos),
-		.p2_hpos(p2_hpos),
-		.p3_hpos(p3_hpos),
-		.p4_hpos(p4_hpos),
-		.p5_hpos(p5_hpos),
-		.p6_hpos(p6_hpos),
-		.p7_hpos(p7_hpos),
-		.is_power(is_power)
-	);
-	
-	//Modify the X position of the Doodle
-	doodle_x dx_mod (
-		.doodle_clk(doodle_clk),
-		.rst(rst_signal),
-		.posData(posData),
-		// TESTING
-		.Led(Led),
-		// END TESTING
-		.d_x(doo_x)
-		);
+		//Doodle Character
+		else if (!terminated && (vc >= d_y - doodleSize && vc <= d_y && hc >= d_x && hc <= d_x + doodleSize)) begin
+			red = 3'b000;
+			green = 3'b111;
+			blue = 2'b00;
+		end
+		
+		// display black: empty space within game zone
+		else
+		begin
+			red = 0;
+			green = 0;
+			blue = 0;
+		end
 
-	doodle_y dy_mod ( 
-		.clk(platform_clk),
-		//.platform_clk(platform_clk),
-		.rst(rst_signal),
-		.terminated(terminated),
-		.p1_vpos(p1_vpos),
-		.p2_vpos(p2_vpos),
-		.p3_vpos(p3_vpos),
-		.p4_vpos(p4_vpos),
-		.p5_vpos(p5_vpos),
-		.p6_vpos(p6_vpos),
-		.p7_vpos(p7_vpos),
-		.p1_hpos(p1_hpos),
-		.p2_hpos(p2_hpos),
-		.p3_hpos(p3_hpos),
-		.p4_hpos(p4_hpos),
-		.p5_hpos(p5_hpos),
-		.p6_hpos(p6_hpos),
-		.p7_hpos(p7_hpos),
-		.is_power(is_power),
-		.d_x(doo_x),
-		.d_y(doo_y),
-		.power_signal(power_signal)
-	);
-
-	vga640x480 vga(
-		.pixel_clk(pixel_clk),
-		.rst(rst_signal),
-		.d_x(doo_x),
-		.d_y(doo_y),
-		.p1_vpos(p1_vpos),
-		.p2_vpos(p2_vpos),
-		.p3_vpos(p3_vpos),
-		.p4_vpos(p4_vpos),
-		.p5_vpos(p5_vpos),
-		.p6_vpos(p6_vpos),
-		.p7_vpos(p7_vpos),
-		.p1_hpos(p1_hpos),
-		.p2_hpos(p2_hpos),
-		.p3_hpos(p3_hpos),
-		.p4_hpos(p4_hpos),
-		.p5_hpos(p5_hpos),
-		.p6_hpos(p6_hpos),
-		.p7_hpos(p7_hpos),
-		.terminated(terminated),
-		.is_power(is_power),
-		.hsync(hsync),
-		.vsync(vsync),
-		.red(red),
-		.green(green),
-		.blue(blue)
-		);
+	end
+	// display black: we're outside game zone
+	else
+	begin
+		red = 0;
+		green = 0;
+		blue = 0;
+	end
+end
 
 endmodule
