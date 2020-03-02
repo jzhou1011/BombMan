@@ -12,6 +12,7 @@ module chara_control(
 	input [1:0] Bomb [0:9][0:9],
 	
 	input clk,
+	input bomb_clk,
 	
 	//output
 	output [1:0] crt_Arena [0:9][0:9],
@@ -90,15 +91,22 @@ module chara_control(
 				Arena[crt_position_1[0]][crt_position_1[1]] <= 0;
 			end
 		end
-		
+			
+	end
+
+	always @ (posedge bomb_clk) begin
 		if (Center) begin
 			if (Bomb[crt_position_1[0]][crt_position_1[1]] == 0) 
 			begin
 				Bomb[crt_position_1[0]][crt_position_1[1]] = 3;
 			end
-			
+
+		if (playerA == 4'b0101) begin // 5
+			if (Bomb[crt_position_2[0]][crt_position_2[1]] == 0) 
+			begin
+				Bomb[crt_position_2[0]][crt_position_2[1]] = 3;
+			end
 	end
-	
 	
 	always @ (posedge clk) begin
 		if (playerA == 4'b0010) begin // 2
@@ -140,12 +148,6 @@ module chara_control(
 				Arena[crt_position_2[0]][crt_position_2[1]] <= 0;
 			end
 		end
-		
-		if (playerA == 4'b0101) begin // 5
-			if (Bomb[crt_position_2[0]][crt_position_2[1]] == 0) 
-			begin
-				Bomb[crt_position_2[0]][crt_position_2[1]] = 3;
-			end
 			
 	end
 	

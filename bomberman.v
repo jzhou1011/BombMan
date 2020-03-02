@@ -33,13 +33,13 @@ module bomberman(
     // arena and bombs status
     reg [1:0] arena [9:0][9:0];
     reg [1:0] bombs [9:0][9:0];
+
     // TODO: initialize?
 
     // clock divider
     wire bomb_clk; // 1 Hz
     wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
-    // wire move_clk; use Debouncer instead
 
     // clocks
     clockDivider clockDivider_(
@@ -59,7 +59,6 @@ module bomberman(
     );
 
     // read player2 input from buttons: use debouncing
-    // TODO: debouncing module input/ouput?
     debouncing debounce_S( 
 	    //input
 	    .btn		(btnS),
@@ -111,7 +110,8 @@ module bomberman(
 	    .Bomb       (bombs),
         .clk        (clk),
 	    .crt_Arena  (arena),
-	    .crt_Bomb   (bombs)
+	    .crt_Bomb   (bombs),
+        .bomb_clk   (bomb_clk)
     );
 
     bomb bomb_(
