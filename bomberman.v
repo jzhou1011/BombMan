@@ -17,7 +17,7 @@ module bomberman(
     output [3:0] an;
 
     // player1: use keypad to control character
-    wire [3:0] playerAinput;  
+    wire [3:0] playerBinput;  
 
     // player2: use buttons to control character
     wire btnS_crt;
@@ -29,6 +29,10 @@ module bomberman(
     // character status
     reg [1:0] playerAhealth = 1;
     reg [1:0] playerBhealth = 1;
+    wire [3:0] playerAx;
+    wire [3:0] playerAy;
+    wire [3:0] playerBx;
+    wire [3:0] playerBy;
 
     // arena and bombs status
     reg [1:0] arena [9:0][9:0];
@@ -39,7 +43,7 @@ module bomberman(
     wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
 
-    reg i,j; // for initialize
+    reg [4:0] i,j; // for initialize
 
     // clocks
     clockDivider clockDivider_(
@@ -86,7 +90,7 @@ module bomberman(
         .clk    (clk),
         .row    (JA[7:4]),
 	    .col    (JA[3:0]),
-        .decode (playerAinput)
+        .decode (playerBinput)
     );
 
     // read player2 input from buttons: use debouncing
@@ -136,13 +140,17 @@ module bomberman(
 	    .Left       (btnL_crt),
 	    .Right      (btnR_crt),
         .Center     (btnS_crt),
-	    .playerA    (playerAinput),
+	    .playerB    (playerBinput),
         .Arena      (arena),
 	    .Bomb       (bombs),
         .clk        (clk),
 	    .crt_Arena  (arena),
 	    .crt_Bomb   (bombs),
-        .bomb_clk   (bomb_clk)
+        .bomb_clk   (bomb_clk),
+        .playerAx   (playerAx),
+	    .playerAy   (playerAy),
+	    .playerBx   (playerBx),
+	    .playerBy   (playerBy)
     );
 
     bomb bomb_(
@@ -150,11 +158,14 @@ module bomberman(
         .o_healthA      (healthA), 
         .o_healthB      (healthB),
         .curBombMap     (bombs), 
-        .curArena       (arena), 
         .healthA        (healthA), 
         .healthB        (healthB), 
         .bombClk        (bomb_clk), 
-        .rst            (0)
+        .rst            (0),
+        .playerAx   (playerAx),
+	    .playerAy   (playerAy),
+	    .playerBx   (playerBx),
+	    .playerBy   (playerBy)
     );
 
     sevenSeg sevenSeg_(
