@@ -1,4 +1,4 @@
-// Inputs the health score for player A and player B, the 7-segment display clock
+// Inputs the health score for player A and player B, the 7-segment display clock of 500 Hz
 // Outputs seg and an for 7-segment display
 module sevenSeg(
     // Inputs
