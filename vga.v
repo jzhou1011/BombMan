@@ -125,7 +125,7 @@ always @(*)
 begin
 
 	// first check if we're within vertical active video range
-	if vc >= vbp && vc <= vfp && hc >= hbp && hc <= hfp
+	if (vc >= vbp && vc <= vfp && hc >= hbp && hc <= hfp)
 	begin
 		if (game_over == 0)
 		begin
