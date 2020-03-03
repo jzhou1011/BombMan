@@ -127,7 +127,7 @@ begin
 	// first check if we're within vertical active video range
 	if (vc >= vbp && vc <= vfp && hc >= hbp && hc <= hfp)
 	begin
-		if (game_over == 0)
+		if (game_over == 0) // check if game is still on
 		begin
 			normalized_vc = vc - vbp
 			normalized_hc = hc - vbp
