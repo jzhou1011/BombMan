@@ -49,8 +49,6 @@ module bomberman(
     wire [3:0] playerBy;
 
     // arena and bombs status
-    wire [1:0] arr_arena [9:0][9:0];
-    wire [1:0] arr_bombs [9:0][9:0];
     reg [1:0] game_state = 0;
 
     // flattened array
@@ -80,41 +78,33 @@ module bomberman(
     // initialize arena and bombs
     for (i = 0; i < 10; i = i+1) begin
 		for (j = 0; j < 10; j = j+1) begin
-            assign bombs[i][j] = 0;
+            assign bombs[i*10+j] = 0;
             if (i == 0 || i == 9 || j == 0 || j == 9) begin
-                assign arena[i][j] = 1; // block
+                assign arena[i*10+j] = 1; // block
             end
             else begin
-                assign arena[i][j] = 0; // blank
+                assign arena[i*10+j] = 0; // blank
             end
 		end
     end
 
     // initialize players and blcks
-    assign arena[1][1] = 2; // player A
-    assign arena[8][8] = 3; // player B
-    assign arena[1][3] = 1; // blocks
-    assign arena[1][7] = 1;
-    assign arena[2][4] = 1;
-    assign arena[3][2] = 1;
-    assign arena[3][4] = 1;
-    assign arena[3][8] = 1;
-    assign arena[4][6] = 1;
-    assign arena[5][1] = 1;
-    assign arena[5][6] = 1;
-    assign arena[5][7] = 1;
-    assign arena[6][2] = 1;
-    assign arena[6][3] = 1;
-    assign arena[7][6] = 1;
-    assign arena[8][4] = 1;
-
-    for (i = 0; i < 10; i = i+1) begin
-		for (j = 0; j < 10; j = j+1) begin
-            // pos = i*10 + j;
-            assign bombs[i*10 + j] = arr_bombs[i][j];
-            assign arena[i*10 + j] = arr_arena[i][j];
-		end
-    end
+    assign arena[11] = 2; // player A
+    assign arena[88] = 3; // player B
+    assign arena[13] = 1; // blocks
+    assign arena[17] = 1;
+    assign arena[24] = 1;
+    assign arena[32] = 1;
+    assign arena[34] = 1;
+    assign arena[38] = 1;
+    assign arena[46] = 1;
+    assign arena[51] = 1;
+    assign arena[56] = 1;
+    assign arena[57] = 1;
+    assign arena[62] = 1;
+    assign arena[63] = 1;
+    assign arena[76] = 1;
+    assign arena[84] = 1;
 
     reset reset_(
         .arena      (arena),
