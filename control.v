@@ -24,8 +24,8 @@ module chara_control(
 	output [3:0] playerBy
     );
 	
-	reg [1:0] Arena [0:9][0:9],
-	reg [1:0] Bomb [0:9][0:9],
+	assign [1:0] Arena [0:9][0:9],
+	assign [1:0] Bomb [0:9][0:9],
 	
 	genvar flatten_i, flatten_j;
 	
