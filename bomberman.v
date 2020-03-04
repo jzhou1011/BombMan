@@ -1,8 +1,8 @@
 module bomberman(
     //output
-    seg, an, // TODO: VGA!
+    seg, an, hsync, vsync, red, green, blue,
     //input
-    clk, JA, btnS, btnR, btnL, btnD, btnU
+    clk, reset, JA, btnS, btnR, btnL, btnD, btnU
 );
 
     input [7:0] JA;
@@ -12,9 +12,18 @@ module bomberman(
     input btnL;
     input btnU;
     input btnD;
+    input reset;
+    // TODO: cannot use reset button directly
 
     output [7:0] seg;
     output [3:0] an;
+
+    // vga
+    output hsync;//horizontal sync out
+    output vsync; //vertical sync out
+    output [2:0] red; //red vga output
+    output [2:0] green; //green vga output
+    output [1:0] blue; //blue vga output
 
     // player1: use keypad to control character
     wire [3:0] playerBinput;  
@@ -27,8 +36,8 @@ module bomberman(
     wire btnD_crt;  
 
     // character status
-    reg [1:0] playerAhealth = 1;
-    reg [1:0] playerBhealth = 1;
+    reg [1:0] playerAhealth = 3;
+    reg [1:0] playerBhealth = 3;
     wire [3:0] playerAx;
     wire [3:0] playerAy;
     wire [3:0] playerBx;
@@ -37,6 +46,8 @@ module bomberman(
     // arena and bombs status
     reg [1:0] arena [9:0][9:0];
     reg [1:0] bombs [9:0][9:0];
+    reg [1:0] game_state = 0;
+    // TODO: game_state in Bomb module??
 
     // clock divider
     wire bomb_clk; // 1 Hz
@@ -48,11 +59,15 @@ module bomberman(
     // clocks
     clockDivider clockDivider_(
 	    .clk		(clk),
-        .rst        (0),
+        .rst        (reset),
 	    .oneHzClock	(bomb_clk),
 	    .VGAClock	(vga_clk),
         .segClock (faster_clk)
     );
+
+    // //initialize health
+    // assign playerAhealth = 3;
+    // assign playerBhealth = 3;
 
     // initialize arena and bombs
     for (i = 0; i < 10; i += 1) begin
@@ -84,6 +99,15 @@ module bomberman(
     arena[6][3] = 1;
     arena[7][6] = 1;
     arena[8][4] = 1;
+
+    reset reset_(
+        .arena      (arena),
+        .bombs      (bombs),
+        .rst        (reset),
+        .healthA    (playerAhealth),
+        .healthB    (playerBhealth),
+        .game_state (game_state)
+    );
 
     // read player1 input from keypad
     keypad keypad_(
@@ -161,11 +185,11 @@ module bomberman(
         .healthA        (healthA), 
         .healthB        (healthB), 
         .bombClk        (bomb_clk), 
-        .rst            (0),
-        .playerAx   (playerAx),
-	    .playerAy   (playerAy),
-	    .playerBx   (playerBx),
-	    .playerBy   (playerBy)
+        .rst            (reset),
+        .playerAx       (playerAx),
+	    .playerAy       (playerAy),
+	    .playerBx       (playerBx),
+	    .playerBy       (playerBy)
     );
 
     sevenSeg sevenSeg_(
@@ -177,6 +201,22 @@ module bomberman(
     );
 
     // VGA
+    vga640x480 vga_(
+        .pixel_clk      (vga_clk), //pixel clock: 25MHz
+        .rst            (reset), //asynchronous reset
+        .player1_x      (playerAx),
+        .player1_y      (playerAy),
+        .player2_x      (playerBx),
+        .player2_y      (playerBy),
+        .Arena          (arena),
+        .Bomb           (bombs),
+        .game_over      (game_state), // three values: player 1 win, player 2 win, draw
+        .hsync          (hsync), //horizontal sync out
+        .vsync          (vsync), //vertical sync out
+        .red            (red), //red vga output
+        .green          (green), //green vga output
+        .blue           (blue)//blue vga output
+    );
 
 endmodule
 
