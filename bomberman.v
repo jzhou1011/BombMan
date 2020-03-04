@@ -171,8 +171,8 @@ module bomberman(
 	    .Right      (btnR_crt),
         .Center     (btnS_crt),
 	    .playerB    (playerBinput),
-        .Arena      (arena),
-	    .Bomb       (bombs),
+        .onedim_Arena      (arena),
+	    .onedim_Bomb       (bombs),
         .clk        (clk),
 	    .crt_Arena  (arena),
 	    .crt_Bomb   (bombs),
@@ -215,8 +215,8 @@ module bomberman(
         .player1_y      (playerAy),
         .player2_x      (playerBx),
         .player2_y      (playerBy),
-        .Arena          (arena),
-        .Bomb           (bombs),
+        .onedim_Arena          (arena),
+        .onedim_Bomb           (bombs),
         .game_over      (game_state), // three values: player 1 win, player 2 win, draw
         .hsync          (hsync), //horizontal sync out
         .vsync          (vsync), //vertical sync out
