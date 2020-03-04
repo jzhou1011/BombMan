@@ -8,21 +8,35 @@ module chara_control(
 	
 	input Center,
 	
-	input [1:0] Arena [0:9][0:9],
-	input [1:0] Bomb [0:9][0:9],
+	input [1:0] onedim_Arena [0:99],
+	input [1:0] onedim_Bomb [0:99],
 	
 	input clk,
 	input bomb_clk,
 	
 	//output
-	output [1:0] crt_Arena [0:9][0:9],
-	output [1:0] crt_Bomb [0:9][0:9],
+	output [1:0] crt_Arena [0:99],
+	output [1:0] crt_Bomb [0:99],
 
 	output [3:0] playerAx,
 	output [3:0] playerAy,
 	output [3:0] playerBx,
 	output [3:0] playerBy
     );
+	
+	reg [1:0] Arena [0:9][0:9],
+	reg [1:0] Bomb [0:9][0:9],
+	
+	genvar flatten_i, flatten_j;
+	
+	for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
+	begin
+		for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
+		begin
+			assign Arena[i][j] = onedim_Arena[i*10+j]
+			assign Bomb[i][j] = onedim_Bomb[i*10+j]
+		end
+	end
 
 	reg [3:0] crt_position_1 [0:1];
 	reg [3:0] crt_position_2 [0:1];
@@ -186,8 +200,8 @@ module chara_control(
 	begin
 		for (n = 0; n < 10; n = n+1) 
 		begin
-			assign crt_Arena[m][n] = temp_Arena[m][n];
-			assign crt_Bomb[m][n] = temp_Bomb[m][n];
+			assign crt_Arena[m*10 + n] = temp_Arena[m][n];
+			assign crt_Bomb[m*10 + n] = temp_Bomb[m][n];
 		end
 	end
 	
