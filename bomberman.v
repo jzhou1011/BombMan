@@ -49,9 +49,13 @@ module bomberman(
     wire [3:0] playerBy;
 
     // arena and bombs status
-    wire [1:0] arena [9:0][9:0];
-    wire [1:0] bombs [9:0][9:0];
+    wire [1:0] arr_arena [9:0][9:0];
+    wire [1:0] arr_bombs [9:0][9:0];
     reg [1:0] game_state = 0;
+
+    // flattened array
+    reg [1:0] arena [99:0];
+    reg [1:0] bombs [99:0];
 
     // clock divider
     wire bomb_clk; // 1 Hz
@@ -103,6 +107,14 @@ module bomberman(
     assign arena[6][3] = 1;
     assign arena[7][6] = 1;
     assign arena[8][4] = 1;
+
+    for (i = 0; i < 10; i = i+1) begin
+		for (j = 0; j < 10; j = j+1) begin
+            // pos = i*10 + j;
+            assign bombs[i*10 + j] = arr_bombs[i][j];
+            assign arena[i*10 + j] = arr_arena[i][j];
+		end
+    end
 
     reset reset_(
         .arena      (arena),
