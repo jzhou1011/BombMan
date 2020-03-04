@@ -11,17 +11,27 @@ module bomb(
     bombClk, rst, game_state
 );
 
-    input [1:0] curBombMap[9:0][9:0];
+    input [1:0] i_curBombMap[99:0];
     input [3:0] playerAx, playerAy, playerBx, playerBy;
     input [1:0] healthA, healthB;
     input bombClk;
     input rst;
-    output reg [1:0] updatedBombMap[9:0][9:0];
+    output [1:0] o_updatedBombMap[99:0];
     output reg [1:0] o_healthA, o_healthB;
 	output reg [1:0] game_state;
 	
 	integer x,y;
     
+    wire [1:0] curBombMap[9:0][9:0];
+    reg [1:0] updatedBombMap[9:0][9:0];
+
+    for (x = 1;x < 9; x = x+1) begin
+        for (y = 1; y < 9; y = y+1) begin
+            assign curBombMap[x][y] = i_curBombMap[10 * x + y];
+        end
+    end
+
+
     always @ (posedge bombClk or posedge rst) begin
         if (rst) begin
             for (x = 1; x<9; x = x+1) begin
@@ -83,6 +93,12 @@ module bomb(
 			end
 			else if(o_healthB == 0)
 				game_state <= 1;
+        end
+    end
+
+    for (x = 1;x < 9; x = x+1) begin
+        for (y = 1; y < 9; y = y+1) begin
+            assign o_updatedBombMap[10 * x + y] = updatedBombMap[x][y];
         end
     end
 
