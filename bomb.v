@@ -4,9 +4,9 @@ outputs the updated bomb map.
 */
 module bomb(
     // Outputs
-    updatedBombMap, o_healthA, o_healthB,
+    o_updatedBombMap, o_healthA, o_healthB,
     // Inputs
-    curBombMap, healthA, healthB,
+    i_curBombMap, healthA, healthB,
     playerAx, playerAy, playerBx, playerBy,
     bombClk, rst, game_state
 );
