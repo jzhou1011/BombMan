@@ -34,8 +34,8 @@ input player1_x,
 input player1_y,
 input player2_x,
 input player2_y,
-input [1:0] Arena [0:9][0:9],
-input [1:0] Bomb [0:9][0:9],
+input [1:0] onedim_Arena [0:99],
+input [1:0] onedim_Bomb [0:99],
 input [1:0] game_over, // three values: player 1 win, player 2 win, draw
 
 output wire hsync, //horizontal sync out
@@ -44,6 +44,20 @@ output reg [2:0] red, //red vga output
 output reg [2:0] green, //green vga output
 output reg [1:0] blue //blue vga output
 );
+	
+wire [1:0] Arena [0:9][0:9],
+wire [1:0] Bomb [0:9][0:9],
+	
+genvar flatten_i, flatten_j;
+	
+for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
+begin
+	for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
+	begin
+		assign Arena[i][j] = onedim_Arena[i*10+j]
+		assign Bomb[i][j] = onedim_Bomb[i*10+j]
+	end
+end	
 
 // video structure constants
 parameter hpixels = 800;// horizontal pixels per line
