@@ -89,26 +89,27 @@ assign vsync = (vc < vpulse) ? 0:1;
 
 // Start parsing input 10*10 array
 
-input [2:0] pixel_array [0:639][0:479];
 
-reg i, j;
-reg modulus_i, modules_j;
+reg [2:0] pixel_array [0:639][0:479];
+
+integer i, j;
+integer modulus_i, modulus_j;
 
 always @ (posedge pixel_clk)
 begin
 
-	for(i = 0, i <= 639, i = i + 1)
+	for(i = 0; i < 640; i = i + 1)
 	begin
-		for(j = 0, j <= 479, j = j + 1)
+		for(j = 0; j < 480; j = j + 1)
 		begin
-			modulus_i = i % 48;
-			modulus_j = j % 48;
+			modulus_i <= i % 48;
+			modulus_j <= j % 48;
 			
-			pixel_array[i][j] = Arena[modulus_i][modulus_j];
+			pixel_array[i][j] <= Arena[modulus_i][modulus_j];
 			if (pixel_array[i][j] == 0)
 			begin
 				if (Bomb[modulus_i][modulus_j] != 0)
-					pixel_array[i][j] = Bomb_pixel[modulus_i][modulus_j] + 3;
+					pixel_array[i][j] <= Bomb[modulus_i][modulus_j] + 3;
 			end
 		end
 	end
@@ -129,15 +130,15 @@ begin
 	begin
 		if (game_over == 0) // check if game is still on
 		begin
-			normalized_vc = vc - vbp
-			normalized_hc = hc - vbp
+			normalized_vc <= vc - vbp;
+			normalized_hc <= hc - vbp;
 			
-			case(pixel_array[vc][hc]):
-			0:	begin red = 3'b111; green = 3'b111; blue = 2'b11; end // background color
-			1:  begin red = 3'b110; green = 3'b111; blue = 2'b11; end // block color
-			2:  begin red = 3'b101; green = 3'b111; blue = 2'b11; end // player1 color
+			case(pixel_array[vc][hc]) 
+			0:	begin red <= 3'b111; green <= 3'b111; blue <= 2'b11; end // background color
+			1:  begin red <= 3'b110; green <= 3'b111; blue <= 2'b11; end // block color
+			2:  begin red <= 3'b101; green <= 3'b111; blue <= 2'b11; end // player1 color
 			//
-			2: begin
+			/*2: begin
 			paint_char paint_char1(
 			.hc (hc),
 			.vc (vc),
@@ -147,11 +148,11 @@ begin
 			.red (red), //red vga output
 			.green (green), //green vga output
 			.blue (blue) //blue vga output
-			);end
+			);end*/
 			////////
-			3:  begin red = 3'b100; green = 3'b111; blue = 2'b11; end // player2 color
+			3:  begin red <= 3'b100; green <= 3'b111; blue <= 2'b11; end // player2 color
 			//
-			3: begin
+			/*3: begin
 			paint_char paint_char2(
 			.hc (hc),
 			.vc (vc),
@@ -161,57 +162,66 @@ begin
 			.red (red), //red vga output
 			.green (green), //green vga output
 			.blue (blue) //blue vga output
-			);end
+			);end*/
 			///////////////
-			4:  begin red = 3'b011; green = 3'b111; blue = 2'b11; end // new bomb color
-			5:  begin red = 3'b010; green = 3'b111; blue = 2'b11; end // bomb after 1 sec color
-			6:  begin red = 3'b001; green = 3'b111; blue = 2'b11; end // exploding color
+			4:  begin red <= 3'b011; green <= 3'b111; blue <= 2'b11; end // new bomb color
+			5:  begin red <= 3'b010; green <= 3'b111; blue <= 2'b11; end // bomb after 1 sec color
+			6:  begin red <= 3'b001; green <= 3'b111; blue <= 2'b11; end // exploding color
+			endcase
 		end
 		
 		else if (game_over == 1)
 		begin
-		
-			paint_gameend paint_gameend1(
-			.hc (hc),
-			.vc (vc),
-			.p_x (vbp), // check how x and y are calculated
-			.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
-			.which (game_over-1), //0 is player1, 1 is player2
-			.red (red), //red vga output
-			.green (green), //green vga output
-			.blue (blue) //blue vga output
-			);end
+			red <= 0;
+			green <= 0;
+			blue <= 0;
+			//paint_gameend paint_gameend1(
+			//.hc (hc),
+			//.vc (vc),
+			//.p_x (vbp), // check how x and y are calculated
+			//.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
+			//.which (game_over-1), //0 is player1, 1 is player2
+			//.red (red), //red vga output
+			//.green (green), //green vga output
+			//.blue (blue) //blue vga output
+			//);end
 			//use a module called draw "Player1 Win"
 			
 		end
 		
 		else if (game_over == 2)
 		begin
-			paint_gameend paint_gameend1(
-			.hc (hc),
-			.vc (vc),
-			.p_x (vbp), // check how x and y are calculated
-			.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
-			.which (game_over-1), //0 is player1, 1 is player2
-			.red (red), //red vga output
-			.green (green), //green vga output
-			.blue (blue) //blue vga output
-			);end
+			red <= 0;
+			green <= 0;
+			blue <= 0;
+			//paint_gameend paint_gameend1(
+			//.hc (hc),
+			//.vc (vc),
+			//.p_x (vbp), // check how x and y are calculated
+			//.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
+			//.which (game_over-1), //0 is player1, 1 is player2
+			//.red (red), //red vga output
+			//.green (green), //green vga output
+			//.blue (blue) //blue vga output
+			//);end
 			//use a module called draw "Player2 Win"
 		end
 		
 		else if (game_over == 3)
 		begin
-			paint_gameend paint_gameend1(
-			.hc (hc),
-			.vc (vc),
-			.p_x (vbp), // check how x and y are calculated
-			.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
-			.which (game_over-1), //0 is player1, 1 is player2
-			.red (red), //red vga output
-			.green (green), //green vga output
-			.blue (blue) //blue vga output
-			);end
+			red <= 0;
+			green <= 0;
+			blue <= 0;
+			//paint_gameend paint_gameend1(
+			//.hc (hc),
+			//.vc (vc),
+			//.p_x (vbp), // check how x and y are calculated
+			//.p_y (hbp), // what this function need is that [3][2] is x = 2, y = 3
+			//.which (game_over-1), //0 is player1, 1 is player2
+			//.red (red), //red vga output
+			//.green (green), //green vga output
+			//.blue (blue) //blue vga output
+			//);end
 			//use a module called draw "Player2 Win"
 		end
 	end
@@ -219,9 +229,9 @@ begin
 	// display black: we're outside game zone
 	else
 	begin
-		red = 0;
-		green = 0;
-		blue = 0;
+		red <= 0;
+		green <= 0;
+		blue <= 0;
 	end
 end
 

@@ -2,7 +2,7 @@ module bomberman(
     //output
     seg, an, hsync, vsync, red, green, blue,
     //input
-    clk, reset, JA, btnS, btnR, btnL, btnD, btnU
+    clk, reset_sw, JA, btnS, btnR, btnL, btnD, btnU
 );
 
     input [7:0] JA;
@@ -12,8 +12,13 @@ module bomberman(
     input btnL;
     input btnU;
     input btnD;
-    input reset;
-    // TODO: cannot use reset button directly
+    input reset_sw;
+	
+	reg reset = 0;
+	always @ (posedge reset_sw)
+	begin
+		reset = ~reset;
+	end
 
     output [7:0] seg;
     output [3:0] an;
@@ -44,17 +49,16 @@ module bomberman(
     wire [3:0] playerBy;
 
     // arena and bombs status
-    reg [1:0] arena [9:0][9:0];
-    reg [1:0] bombs [9:0][9:0];
+    wire [1:0] arena [9:0][9:0];
+    wire [1:0] bombs [9:0][9:0];
     reg [1:0] game_state = 0;
-    // TODO: game_state in Bomb module??
 
     // clock divider
     wire bomb_clk; // 1 Hz
     wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
 
-    reg [4:0] i,j; // for initialize
+    genvar i,j; // for initialize
 
     // clocks
     clockDivider clockDivider_(
@@ -70,35 +74,35 @@ module bomberman(
     // assign playerBhealth = 3;
 
     // initialize arena and bombs
-    for (i = 0; i < 10; i += 1) begin
-		for (j = 0; j < 10; j += 1) begin
-            bombs[i][j] = 0;
+    for (i = 0; i < 10; i = i+1) begin
+		for (j = 0; j < 10; j = j+1) begin
+            assign bombs[i][j] = 0;
             if (i == 0 || i == 9 || j == 0 || j == 9) begin
-                arena[i][j] = 1; // block
+                assign arena[i][j] = 1; // block
             end
             else begin
-                arena[i][j] = 0; // blank
+                assign arena[i][j] = 0; // blank
             end
 		end
     end
 
     // initialize players and blcks
-    arena[1][1] = 2; // player A
-    arena[8][8] = 3; // player B
-    arena[1][3] = 1; // blocks
-    arena[1][7] = 1;
-    arena[2][4] = 1;
-    arena[3][2] = 1;
-    arena[3][4] = 1;
-    arena[3][8] = 1;
-    arena[4][6] = 1;
-    arena[5][1] = 1;
-    arena[5][6] = 1;
-    arena[5][7] = 1;
-    arena[6][2] = 1;
-    arena[6][3] = 1;
-    arena[7][6] = 1;
-    arena[8][4] = 1;
+    assign arena[1][1] = 2; // player A
+    assign arena[8][8] = 3; // player B
+    assign arena[1][3] = 1; // blocks
+    assign arena[1][7] = 1;
+    assign arena[2][4] = 1;
+    assign arena[3][2] = 1;
+    assign arena[3][4] = 1;
+    assign arena[3][8] = 1;
+    assign arena[4][6] = 1;
+    assign arena[5][1] = 1;
+    assign arena[5][6] = 1;
+    assign arena[5][7] = 1;
+    assign arena[6][2] = 1;
+    assign arena[6][3] = 1;
+    assign arena[7][6] = 1;
+    assign arena[8][4] = 1;
 
     reset reset_(
         .arena      (arena),
@@ -113,7 +117,7 @@ module bomberman(
     keypad keypad_(
         .clk    (clk),
         .row    (JA[7:4]),
-	    .col    (JA[3:0]),
+	    //.col    (JA[3:0]),
         .decode (playerBinput)
     );
 
@@ -189,7 +193,8 @@ module bomberman(
         .playerAx       (playerAx),
 	    .playerAy       (playerAy),
 	    .playerBx       (playerBx),
-	    .playerBy       (playerBy)
+	    .playerBy       (playerBy),
+		.game_state		(game_state)
     );
 
     sevenSeg sevenSeg_(

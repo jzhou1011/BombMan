@@ -8,7 +8,7 @@ module bomb(
     // Inputs
     curBombMap, healthA, healthB,
     playerAx, playerAy, playerBx, playerBy,
-    bombClk, rst
+    bombClk, rst, game_state
 );
 
     input [1:0] curBombMap[9:0][9:0];
@@ -18,6 +18,9 @@ module bomb(
     input rst;
     output reg [1:0] updatedBombMap[9:0][9:0];
     output reg [1:0] o_healthA, o_healthB;
+	output reg [1:0] game_state;
+	
+	integer x,y;
     
     always @ (posedge bombClk or posedge rst) begin
         if (rst) begin
@@ -39,26 +42,26 @@ module bomb(
                         updatedBombMap[x][y] <= 0;
                         // Hit player A, no repetitive damage in one cycle
                         // It player A on the same line and y coord with radius of 2
-                        if (playerAx == x and playerAy - y < 3 and y - playerAy > -3) begin
+                        if (playerAx == x && playerAy - y < 3 && y - playerAy > -3) begin
                             if (healthA != 0)
                                 o_healthA <= healthA - 1;
                             else
                                 o_healthA <= 0;
                         end
-                        else if (playerAy == y and playerAx - x < 3 and x - playerAx > -3) begin
+                        else if (playerAy == y && playerAx - x < 3 && x - playerAx > -3) begin
                             if (healthA != 0)
                                 o_healthA <= healthA - 1;
                             else
                                 o_healthA <= 0;
                         end
                         // Hit player B
-                        if (playerBx == x and playerBy - y < 3 and y - playerBy > -3) begin
+                        if (playerBx == x && playerBy - y < 3 && y - playerBy > -3) begin
                             if (healthB != 0)
                                 o_healthB <= healthB - 1;
                             else
                                 o_healthB <= 0;
                         end
-                        else if (playerBy == y and playerBx - x < 3 and x - playerBx > -3) begin
+                        else if (playerBy == y && playerBx - x < 3 && x - playerBx > -3) begin
                             if (healthB != 0)
                                 o_healthB <= healthB - 1;
                             else
@@ -68,8 +71,18 @@ module bomb(
                     // Bomb state advancing
                     else
                         updatedBombMap[x][y] <= curBombMap[x][y] + 1;
+					
                 end
             end
+			if (o_healthA == 0)
+			begin
+				if (o_healthB == 0)
+					game_state <= 3;
+				else
+					game_state <= 2;
+			end
+			else if(o_healthB == 0)
+				game_state <= 1;
         end
     end
 

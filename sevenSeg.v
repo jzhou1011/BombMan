@@ -30,7 +30,7 @@ module sevenSeg(
     reg [1:0] segment_act_counter = 2'b00;
 
     always @ (posedge clk) begin
-        case (segment_act_counter):
+        case (segment_act_counter)
             2'b00: begin
 			    an <= 4'b0111;
                 seg <= seven_o_3;
@@ -47,7 +47,7 @@ module sevenSeg(
                 an <= 4'b1110;
                 seg <= seven_o_0;
             end
-		end
+		endcase
         segment_act_counter <= segment_act_counter+1;
     end
 
