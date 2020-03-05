@@ -66,7 +66,7 @@ for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
 begin
 	for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
 	begin
-		assign onedim_Arena[flatten_i*10+flatten_j] = {Arena_bit1[flatten_i*10+flatten_j], Arena_bit0[flatten_i*10+flatten_j]};
+		assign onedim_Arena[flatten_i*10+flatten_j] = Arena_bit0[flatten_i*10+flatten_j];
 		assign onedim_Bomb[flatten_i*10+flatten_j] = {Bomb_bit1[flatten_i*10+flatten_j], Bomb_bit0[flatten_i*10+flatten_j]};
 	end
 end	
