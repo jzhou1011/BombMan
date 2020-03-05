@@ -37,7 +37,7 @@ input player2_y,
 input Arena_bit0 [0:99],
 input Arena_bit1 [0:99],
 input Bomb_bit0 [0:99],
-input Bomb_bit0 [0:99],
+input Bomb_bit1 [0:99],
 input [1:0] game_over, // three values: player 1 win, player 2 win, draw
 
 output wire hsync, //horizontal sync out
