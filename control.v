@@ -22,6 +22,7 @@ module chara_control(
 	output [99:0] crt_Bomb_bit0,
 	output [99:0] crt_Bomb_bit1,
 
+
 	output [3:0] playerAx,
 	output [3:0] playerAy,
 	output [3:0] playerBx,
@@ -214,7 +215,6 @@ module chara_control(
 		end
 			
 	end
-
 	
 	genvar m, n;
 	for (m = 0; m < 10; m = m+1)
