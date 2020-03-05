@@ -49,6 +49,12 @@ output reg [2:0] green, //green vga output
 output reg [1:0] blue //blue vga output
 );
 	
+parameter width = 480;
+parameter length = 640;
+parameter block_len = length/10;
+parameter block_wid = width/10;
+
+	
 wire [1:0] onedim_Arena [0:99];
 wire [1:0] onedim_Bomb [0:99];
 
@@ -84,9 +90,9 @@ parameter vlines = 521; // vertical lines per frame
 parameter hpulse = 96; 	// hsync pulse length
 parameter vpulse = 2; 	// vsync pulse length
 parameter hbp = 80; 	// end of horizontal back porch
-parameter hfp = 720; 	// beginning of horizontal front porch
+parameter hfp = hbp + length; 	// beginning of horizontal front porch
 parameter vbp = 31; 		// end of vertical back porch
-parameter vfp = 511; 	// beginning of vertical front porch
+parameter vfp = vbp + width; 	// beginning of vertical front porch
 
 // active horizontal video is therefore: 784 - 144 = 640
 // active vertical video is therefore: 511 - 31 = 480
@@ -123,7 +129,7 @@ assign vsync = (vc < vpulse) ? 0:1;
 // Start parsing input 10*10 array
 
 
-reg [2:0] pixel_array [0:639][0:479];
+reg [2:0] pixel_array [0:length - 1][0:width - 1];
 
 integer i, j;
 integer modulus_i, modulus_j;
@@ -131,12 +137,12 @@ integer modulus_i, modulus_j;
 always @ (posedge pixel_clk)
 begin
 
-	for(i = 0; i < 640; i = i + 1)
+	for(i = 0; i < length; i = i + 1)
 	begin
-		for(j = 0; j < 480; j = j + 1)
+		for(j = 0; j < width; j = j + 1)
 		begin
-			modulus_i <= i % 48;
-			modulus_j <= j % 48;
+			modulus_i <= i % block_len;
+			modulus_j <= j % block_wid;
 			
 			pixel_array[i][j] <= Arena[modulus_i][modulus_j];
 			if (pixel_array[i][j] == 0)
