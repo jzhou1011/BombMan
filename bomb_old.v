@@ -2,7 +2,7 @@
 Takes in the current bomb map, bomb clock of 1Hz and reset signal,
 outputs the updated bomb map.
 */
-module bomb(
+module bomb_old(
     // Outputs
     o_updatedBombMap_0, o_updatedBombMap_1, o_healthA, o_healthB,
     // Inputs
@@ -17,8 +17,8 @@ module bomb(
     input [1:0] healthA, healthB;
     input bombClk;
     input rst;
-    output reg o_updatedBombMap_0[99:0];
-    output reg o_updatedBombMap_1[99:0];
+    output o_updatedBombMap_0[99:0];
+    output o_updatedBombMap_1[99:0];
     output reg [1:0] o_healthA, o_healthB;
 	output reg [1:0] game_state;
 	
@@ -38,8 +38,7 @@ module bomb(
         if (rst) begin
             for (x = 1; x<9; x = x+1) begin
                 for (y=1; y<9; y=y+1) begin
-                    o_updatedBombMap_0[10 * x + y] <= 0;
-                    o_updatedBombMap_1[10 * x + y] <= 0;
+                    updatedBombMap[x][y] <= 0;
                 end
             end
         end
@@ -48,13 +47,11 @@ module bomb(
                 for (y=1; y<9; y=y+1) begin
                     // No bomb
                     if (curBombMap[x][y] == 0) begin
-                        o_updatedBombMap_0[10 * x + y] <= 0;
-                        o_updatedBombMap_1[10 * x + y] <= 0;
+                        updatedBombMap[x][y] <= 0;
                     end
                     // Bomb exploding
-                    else if (i_curBombMap_1[10 * x + y] == 1 && i_curBombMap_0[10 * x + y] == 1) begin
-                        o_updatedBombMap_0[10 * x + y] <= 0;
-                        o_updatedBombMap_1[10 * x + y] <= 0;
+                    else if (curBombMap[x][y] == 3) begin
+                        updatedBombMap[x][y] <= 0;
                         // Hit player A, no repetitive damage in one cycle
                         // It player A on the same line and y coord with radius of 2
                         if (playerAx == x && playerAy - y < 3 && y - playerAy > -3) begin
