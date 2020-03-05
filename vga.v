@@ -36,7 +36,7 @@ input player2_x,
 input player2_y,
 
 input [99:0] Arena_bit0,
-input [99:0] Arena_bit1,
+//input [99:0] Arena_bit1,
 input [99:0] Bomb_bit0,
 input [99:0] Bomb_bit1,
 
@@ -55,7 +55,8 @@ parameter block_len = length/10;
 parameter block_wid = width/10;
 
 	
-wire [1:0] onedim_Arena [0:99];
+//wire [1:0] onedim_Arena [0:99];
+wire onedim_Arena [0:99];
 wire [1:0] onedim_Bomb [0:99];
 
 	
@@ -71,7 +72,8 @@ begin
 end	
 
 	
-wire [1:0] Arena [0:9][0:9];
+//wire [1:0] Arena [0:9][0:9];
+wire Arena [0:9][0:9];
 wire [1:0] Bomb [0:9][0:9];
 
 	
@@ -148,7 +150,7 @@ begin
 			if (pixel_array[i][j] == 0)
 			begin
 				if (Bomb[modulus_i][modulus_j] != 0)
-					pixel_array[i][j] <= Bomb[modulus_i][modulus_j] + 3;
+					pixel_array[i][j] <= Bomb[modulus_i][modulus_j] + 2 // 3;
 			end
 		end
 	end
