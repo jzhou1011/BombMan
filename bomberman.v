@@ -224,8 +224,10 @@ module bomberman(
         .player1_y      (playerAy),
         .player2_x      (playerBx),
         .player2_y      (playerBy),
-        .onedim_Arena          (arena),
-        .onedim_Bomb           (bombs),
+	.Arena_bit0          (arena_0),
+	    .Arena_bit1          (arena_1),
+	.Bomb_bit0          (bomb_0),
+	    .Bomb_bit1          (bomb_1),
         .game_over      (game_state), // three values: player 1 win, player 2 win, draw
         .hsync          (hsync), //horizontal sync out
         .vsync          (vsync), //vertical sync out
