@@ -20,14 +20,15 @@ module bomb(
     output reg [1:0] o_healthA, o_healthB;
 	output reg [1:0] game_state;
 	
+	genvar i,j;
 	integer x,y;
     
     wire [1:0] curBombMap[9:0][9:0];
     reg [1:0] updatedBombMap[9:0][9:0];
 
-    for (x = 1;x < 9; x = x+1) begin
-        for (y = 1; y < 9; y = y+1) begin
-            assign curBombMap[x][y] = i_curBombMap[10 * x + y];
+    for (i = 1;i < 9; i = i+1) begin
+        for (j = 1; j < 9; j = j+1) begin
+            assign curBombMap[i][j] = i_curBombMap[10 * i + j];
         end
     end
 
@@ -96,9 +97,9 @@ module bomb(
         end
     end
 
-    for (x = 1;x < 9; x = x+1) begin
-        for (y = 1; y < 9; y = y+1) begin
-            assign o_updatedBombMap[10 * x + y] = updatedBombMap[x][y];
+    for (i = 1;i < 9; i = i+1) begin
+        for (j = 1; j < 9; j = j+1) begin
+            assign o_updatedBombMap[10 * i + j] = updatedBombMap[i][j];
         end
     end
 

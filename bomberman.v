@@ -14,7 +14,7 @@ module bomberman(
     input btnD;
     input reset_sw;
 	
-	reg reset = 0;
+	reg reset = 1;
 	always @ (posedge reset_sw)
 	begin
 		reset = ~reset;
@@ -52,8 +52,12 @@ module bomberman(
     reg [1:0] game_state = 0;
 
     // flattened array
-    reg [1:0] arena [99:0];
-    reg [1:0] bombs [99:0];
+	wire arena_0 [99:0];
+    wire arena_1 [99:0];
+    wire bombs_0 [99:0];
+	wire bombs_1 [99:0];
+	reg [1:0] o_arena [99:0];
+    reg [1:0] o_bombs [99:0];
 
     // clock divider
     wire bomb_clk; // 1 Hz
@@ -76,18 +80,15 @@ module bomberman(
     // assign playerBhealth = 3;
 
     // initialize arena and bombs
+	
     for (i = 0; i < 10; i = i+1) begin
 		for (j = 0; j < 10; j = j+1) begin
-            assign bombs[i*10+j] = 0;
-            if (i == 0 || i == 9 || j == 0 || j == 9) begin
-                assign arena[i*10+j] = 1; // block
-            end
-            else begin
-                assign arena[i*10+j] = 0; // blank
-            end
+            assign arena[i][j] = o_arena[i][j];
+			assign bombs[i][j] = bombs[i][j];
 		end
     end
-
+	
+	/*
     // initialize players and blcks
     assign arena[11] = 2; // player A
     assign arena[88] = 3; // player B
@@ -104,11 +105,11 @@ module bomberman(
     assign arena[62] = 1;
     assign arena[63] = 1;
     assign arena[76] = 1;
-    assign arena[84] = 1;
+    assign arena[84] = 1; */
 
     reset reset_(
-        .arena      (arena),
-        .bombs      (bombs),
+        .arena      (o_arena),
+        .bombs      (o_arena),
         .rst        (reset),
         .healthA    (playerAhealth),
         .healthB    (playerBhealth),
@@ -174,8 +175,8 @@ module bomberman(
         .onedim_Arena      (arena),
 	    .onedim_Bomb       (bombs),
         .clk        (clk),
-	    .crt_Arena  (arena),
-	    .crt_Bomb   (bombs),
+	    .crt_Arena  (o_arena),
+	    .crt_Bomb   (o_bombs),
         .bomb_clk   (bomb_clk),
         .playerAx   (playerAx),
 	    .playerAy   (playerAy),
@@ -184,7 +185,7 @@ module bomberman(
     );
 
     bomb bomb_(
-        .updatedBombMap (bombs), 
+        .updatedBombMap (o_bombs), 
         .o_healthA      (healthA), 
         .o_healthB      (healthB),
         .curBombMap     (bombs), 

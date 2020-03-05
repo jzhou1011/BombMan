@@ -24,19 +24,19 @@ module chara_control(
 	output [3:0] playerBy
     );
 	
-	assign [1:0] Arena [0:9][0:9],
-	assign [1:0] Bomb [0:9][0:9],
-	
+	wire [1:0] Arena [0:9][0:9];
+	wire [1:0] Bomb [0:9][0:9];
+		
 	genvar flatten_i, flatten_j;
 	
 	for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
 	begin
 		for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
 		begin
-			assign Arena[i][j] = onedim_Arena[i*10+j]
-			assign Bomb[i][j] = onedim_Bomb[i*10+j]
+			assign Arena[flatten_i][flatten_j] = onedim_Arena[flatten_i*10+flatten_j];
+			assign Bomb[flatten_i][flatten_j] = onedim_Bomb[flatten_i*10+flatten_j];
 		end
-	end
+	end	
 
 	reg [3:0] crt_position_1 [0:1];
 	reg [3:0] crt_position_2 [0:1];
