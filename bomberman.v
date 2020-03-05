@@ -191,10 +191,12 @@ module bomberman(
     );
 
     bomb bomb_(
-        .updatedBombMap (o_bombs), 
+        .o_updatedBombMap_0 (o_bombs_0),
+        .o_updatedBombMap_1 (o_bombs_1), 
         .o_healthA      (healthA), 
         .o_healthB      (healthB),
-        .curBombMap     (bombs), 
+        .i_curBombMap_0     (bombs_0),
+        .i_curBombMap_1     (bombs_1),
         .healthA        (healthA), 
         .healthB        (healthB), 
         .bombClk        (bomb_clk), 
