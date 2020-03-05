@@ -34,8 +34,10 @@ input player1_x,
 input player1_y,
 input player2_x,
 input player2_y,
-input [1:0] onedim_Arena [0:99],
-input [1:0] onedim_Bomb [0:99],
+input Arena_bit0 [0:99],
+input Arena_bit1 [0:99],
+input Bomb_bit0 [0:99],
+input Bomb_bit0 [0:99],
 input [1:0] game_over, // three values: player 1 win, player 2 win, draw
 
 output wire hsync, //horizontal sync out
@@ -45,10 +47,25 @@ output reg [2:0] green, //green vga output
 output reg [1:0] blue //blue vga output
 );
 	
-wire [1:0] Arena [0:9][0:9];
-wire [1:0] Bomb [0:9][0:9];
+wire [1:0] onedim_Arena [0:99],
+wire [1:0] onedim_Bomb [0:99],
+
 	
 genvar flatten_i, flatten_j;
+	
+for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
+begin
+	for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
+	begin
+		assign onedim_Arena[flatten_i][flatten_j] = {Arena_bit1[flatten_i][flatten_j], Arena_bit0[flatten_i][flatten_j]};
+		assign onedim_Arena[flatten_i][flatten_j] = {Bomb_bit1[flatten_i][flatten_j], Bomb_bit0[flatten_i][flatten_j]};
+	end
+end	
+
+	
+wire [1:0] Arena [0:9][0:9];
+wire [1:0] Bomb [0:9][0:9];
+
 	
 for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
 begin
