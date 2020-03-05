@@ -11,8 +11,8 @@ module bomb(
     bombClk, rst, game_state
 );
 
-    input i_curBombMap_0[99:0];
-    input i_curBombMap_1[99:0];
+    input [99:0] i_curBombMap_0;
+    input [99:0] i_curBombMap_1;
     input [3:0] playerAx, playerAy, playerBx, playerBy;
     input [1:0] healthA, healthB;
     input bombClk;
@@ -26,10 +26,12 @@ module bomb(
     
     wire [1:0] curBombMap[9:0][9:0];
     reg [1:0] updatedBombMap[9:0][9:0];
+	
+	genvar i,j;
 
-    for (x = 1;x < 9; x = x+1) begin
-        for (y = 1; y < 9; y = y+1) begin
-            assign curBombMap[x][y] = {i_curBombMap_1[10 * x + y], i_curBombMap_0[10 * x + y]};
+    for (i = 1;i < 9; i = i+1) begin
+        for (j= 1; j< 9; j= j+1) begin
+            assign curBombMap[i][j] = {i_curBombMap_1[10 *i + j], i_curBombMap_0[10 * i + j]};
         end
     end
 
@@ -101,10 +103,10 @@ module bomb(
         end
     end
 
-    for (x = 1;x < 9; x = x+1) begin
-        for (y = 1; y < 9; y = y+1) begin
-            assign o_updatedBombMap_0[10 * x + y] = updatedBombMap[x][y][0];
-            assign o_updatedBombMap_1[10 * x + y] = updatedBombMap[x][y][1];
+    for (i = 1;i < 9; i = i+1) begin
+        for (j= 1; j< 9; j= j+1) begin
+            assign o_updatedBombMap_0[10 * i + j] = updatedBombMap[i][j][0];
+            assign o_updatedBombMap_1[10 * i + j] = updatedBombMap[i][j][1];
         end
     end
 

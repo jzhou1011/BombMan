@@ -41,25 +41,25 @@ module bomberman(
     wire btnD_crt;  
 
     // character status
-    reg [1:0] playerAhealth = 3;
-    reg [1:0] playerBhealth = 3;
+    wire [1:0] playerAhealth = 3;
+    wire [1:0] playerBhealth = 3;
     wire [3:0] playerAx;
     wire [3:0] playerAy;
     wire [3:0] playerBx;
     wire [3:0] playerBy;
 
     // arena and bombs status
-    reg [1:0] game_state = 0;
+    wire [1:0] game_state = 0;
 
     // flattened array
-	wire arena_0 [99:0];
-    wire arena_1 [99:0];
-    wire bombs_0 [99:0];
-	wire bombs_1 [99:0];
-	reg o_arena_0 [99:0];
-    reg o_bombs_0 [99:0];
-    reg o_arena_1 [99:0];
-    reg o_bombs_1 [99:0];
+	wire [99:0] arena_0;
+    wire [99:0] arena_1;
+    wire [99:0] bombs_0;
+	wire [99:0] bombs_1;
+	wire [99:0] o_arena_0;
+    wire [99:0] o_bombs_0;
+    wire [99:0] o_arena_1;
+    wire [99:0] o_bombs_1;
 
     // clock divider
     wire bomb_clk; // 1 Hz
@@ -85,10 +85,10 @@ module bomberman(
 	
     for (i = 0; i < 10; i = i+1) begin
 		for (j = 0; j < 10; j = j+1) begin
-            assign arena_0[i][j] = o_arena_0[i][j];
-			assign bombs_0[i][j] = o_bombs_0[i][j];
-            assign arena_1[i][j] = o_arena_1[i][j];
-			assign bombs_1[i][j] = o_bombs_1[i][j];
+            assign arena_0[j] = o_arena_0[j];
+			assign bombs_0[j] = o_bombs_0[j];
+            assign arena_1[i] = o_arena_1[i];
+			assign bombs_1[i] = o_bombs_1[i];
 		end
     end
 	
