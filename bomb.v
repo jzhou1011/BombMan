@@ -23,18 +23,6 @@ module bomb(
 	output reg [1:0] game_state;
 	
 	integer x,y;
-    
-    wire [1:0] curBombMap[9:0][9:0];
-    reg [1:0] updatedBombMap[9:0][9:0];
-	
-	genvar i,j;
-
-    for (i = 1;i < 9; i = i+1) begin
-        for (j= 1; j< 9; j= j+1) begin
-            assign curBombMap[i][j] = {i_curBombMap_1[10 *i + j], i_curBombMap_0[10 * i + j]};
-        end
-    end
-
 
     always @ (posedge bombClk or posedge rst) begin
         if (rst) begin
@@ -86,8 +74,10 @@ module bomb(
                         end
                     end
                     // Bomb state advancing
-                    else
-                        updatedBombMap[x][y] <= curBombMap[x][y] + 1;
+                    else begin
+                        o_updatedBombMap_1[10 * x + y] <= o_updatedBombMap_0[10 * x + y]) ^ o_updatedBombMap_1[10 * x + y];
+                        o_updatedBombMap_0[10 * x + y] <= ~o_updatedBombMap_0[10 * x + y];
+                    end
 					
                 end
             end
@@ -100,13 +90,6 @@ module bomb(
 			end
 			else if(o_healthB == 0)
 				game_state <= 1;
-        end
-    end
-
-    for (i = 1;i < 9; i = i+1) begin
-        for (j= 1; j< 9; j= j+1) begin
-            assign o_updatedBombMap_0[10 * i + j] = updatedBombMap[i][j][0];
-            assign o_updatedBombMap_1[10 * i + j] = updatedBombMap[i][j][1];
         end
     end
 
