@@ -56,8 +56,10 @@ module bomberman(
     wire arena_1 [99:0];
     wire bombs_0 [99:0];
 	wire bombs_1 [99:0];
-	reg [1:0] o_arena [99:0];
-    reg [1:0] o_bombs [99:0];
+	reg o_arena_0 [99:0];
+    reg o_bombs_0 [99:0];
+    reg o_arena_1 [99:0];
+    reg o_bombs_1 [99:0];
 
     // clock divider
     wire bomb_clk; // 1 Hz
@@ -83,8 +85,10 @@ module bomberman(
 	
     for (i = 0; i < 10; i = i+1) begin
 		for (j = 0; j < 10; j = j+1) begin
-            assign arena[i][j] = o_arena[i][j];
-			assign bombs[i][j] = bombs[i][j];
+            assign arena_0[i][j] = o_arena_0[i][j];
+			assign bombs_0[i][j] = o_bombs_0[i][j];
+            assign arena_1[i][j] = o_arena_1[i][j];
+			assign bombs_1[i][j] = o_bombs_1[i][j];
 		end
     end
 	
@@ -108,8 +112,10 @@ module bomberman(
     assign arena[84] = 1; */
 
     reset reset_(
-        .arena      (o_arena),
-        .bombs      (o_arena),
+        .arena_0      (o_arena_0),
+        .bombs_0      (o_bombs_0),
+        .arena_1      (o_arena_1),
+        .bombs_1      (o_bombs_1),
         .rst        (reset),
         .healthA    (playerAhealth),
         .healthB    (playerBhealth),
