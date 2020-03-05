@@ -8,15 +8,19 @@ module chara_control(
 	
 	input Center,
 	
-	input [1:0] onedim_Arena [0:99],
-	input [1:0] onedim_Bomb [0:99],
+	input Arena_bit0 [0:99],
+	input Arena_bit1 [0:99],
+	input Bomb_bit0 [0:99],
+	input Bomb_bit1 [0:99],
 	
 	input clk,
 	input bomb_clk,
 	
 	//output
-	output [1:0] crt_Arena [0:99],
-	output [1:0] crt_Bomb [0:99],
+	output crt_Arena_bit0 [0:99],
+	output crt_Arena_bit1 [0:99],
+	output crt_Bomb_bit0 [0:99],
+	output crt_Bomb_bit1 [0:99],
 
 	output [3:0] playerAx,
 	output [3:0] playerAy,
@@ -24,11 +28,26 @@ module chara_control(
 	output [3:0] playerBy
     );
 	
-	wire [1:0] Arena [0:9][0:9];
-	wire [1:0] Bomb [0:9][0:9];
+	wire [1:0] onedim_Arena [0:99],
+	wire [1:0] onedim_Bomb [0:99],
+	
 		
 	genvar flatten_i, flatten_j;
+		
+	for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
+	begin
+		for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
+		begin
+			assign onedim_Arena[flatten_i][flatten_j] = {Arena_bit1[flatten_i][flatten_j], Arena_bit0[flatten_i][flatten_j]};
+			assign onedim_Arena[flatten_i][flatten_j] = {Bomb_bit1[flatten_i][flatten_j], Bomb_bit0[flatten_i][flatten_j]};
+		end
+	end	
 	
+		
+	wire [1:0] Arena [0:9][0:9];
+	wire [1:0] Bomb [0:9][0:9];
+	
+		
 	for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
 	begin
 		for (flatten_j = 0; flatten_j < 10; flatten_j = flatten_j+1)
@@ -37,6 +56,7 @@ module chara_control(
 			assign Bomb[flatten_i][flatten_j] = onedim_Bomb[flatten_i*10+flatten_j];
 		end
 	end	
+	
 
 	reg [3:0] crt_position_1 [0:1];
 	reg [3:0] crt_position_2 [0:1];
@@ -194,15 +214,18 @@ module chara_control(
 			
 	end
 	
-	
 	genvar m, n;
 	for (m = 0; m < 10; m = m+1)
 	begin
 		for (n = 0; n < 10; n = n+1) 
 		begin
-			assign crt_Arena[m*10 + n] = temp_Arena[m][n];
-			assign crt_Bomb[m*10 + n] = temp_Bomb[m][n];
+			assign crt_Arena_bit0[m*10 + n] = temp_Arena[m][n][0];
+			assign crt_Arena_bit1[m*10 + n] = temp_Arena[m][n][1];
+			assign crt_Bomb_bit0[m*10 + n] = temp_Bomb[m][n][0];
+			assign crt_Bomb_bit1[m*10 + n] = temp_Bomb[m][n][1];
 		end
 	end
+	
+	
 	
 endmodule
