@@ -49,8 +49,8 @@ output reg [2:0] green, //green vga output
 output reg [1:0] blue //blue vga output
 );
 	
-parameter width = 480;
-parameter length = 640;
+parameter width = 100;
+parameter length = 100;
 parameter block_len = length/10;
 parameter block_wid = width/10;
 
