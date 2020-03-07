@@ -148,8 +148,8 @@ begin
 			normalized_vc <= vc - vbp;
 			normalized_hc <= hc - vbp;
 			
-			modulus_i <= hc % block_len;
-			modulus_j <= vc % block_wid;
+			modulus_i <= hc / block_len;
+			modulus_j <= vc / block_wid;
 			
 			pixel_crt <= Arena[modulus_i][modulus_j];
 			if (pixel_crt == 0)
