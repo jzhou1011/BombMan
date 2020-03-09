@@ -138,8 +138,6 @@ module bomberman(
 
     initialize reset_(
         .arena_0      (arena_0_inter),
-        .bombs_0      (bombs_0_inter),
-        .bombs_1      (bombs_1_inter),
         .rst        (reset)
     );
 
@@ -226,8 +224,8 @@ module bomberman(
         .o_updatedBombMap_1 (o_bombs_1), 
         .o_healthA      (o_playerAhealth), 
         .o_healthB      (o_playerBhealth),
-        .i_curBombMap_0     (bombs_0_inter_2),
-        .i_curBombMap_1     (bombs_1_inter_2),
+        .i_curBombMap_0     (bombs_0),
+        .i_curBombMap_1     (bombs_1),
         .healthA        (playerAhealth), 
         .healthB        (playerBhealth), 
         .bombClk        (bomb_clk), 
