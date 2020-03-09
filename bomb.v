@@ -17,8 +17,8 @@ module bomb(
     input [1:0] healthA, healthB;
     input bombClk;
     input rst;
-    output reg o_updatedBombMap_0[99:0];
-    output reg o_updatedBombMap_1[99:0];
+    output reg [99:0] o_updatedBombMap_0;
+    output reg [99:0] o_updatedBombMap_1;
     output reg [1:0] o_healthA, o_healthB;
 	output reg [1:0] game_state;
 	
@@ -37,7 +37,7 @@ module bomb(
             for (x = 1; x<9; x = x+1) begin
                 for (y=1; y<9; y=y+1) begin
                     // No bomb
-                    if (curBombMap[x][y] == 0) begin
+                    if (i_curBombMap_1[10 * x + y] == 0 && i_curBombMap_0[10 * x + y] == 0) begin
                         o_updatedBombMap_0[10 * x + y] <= 0;
                         o_updatedBombMap_1[10 * x + y] <= 0;
                     end
@@ -75,7 +75,7 @@ module bomb(
                     end
                     // Bomb state advancing
                     else begin
-                        o_updatedBombMap_1[10 * x + y] <= o_updatedBombMap_0[10 * x + y]) ^ o_updatedBombMap_1[10 * x + y];
+                        o_updatedBombMap_1[10 * x + y] <= o_updatedBombMap_0[10 * x + y] ^ o_updatedBombMap_1[10 * x + y];
                         o_updatedBombMap_0[10 * x + y] <= ~o_updatedBombMap_0[10 * x + y];
                     end
 					

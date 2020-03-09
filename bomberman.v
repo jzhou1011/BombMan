@@ -43,6 +43,8 @@ module bomberman(
     // character status
     wire [1:0] playerAhealth;
     wire [1:0] playerBhealth;
+	wire [1:0] o_playerAhealth;
+    wire [1:0] o_playerBhealth;
     wire [3:0] playerAx;
     wire [3:0] playerAy;
     wire [3:0] playerBx;
@@ -68,7 +70,7 @@ module bomberman(
     wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
 
-    genvar i,j; // for initialize
+    genvar i; // for initialize
 
     // clocks
     clockDivider clockDivider_(
@@ -85,13 +87,18 @@ module bomberman(
 
     // initialize arena and bombs
 	
-    for (i = 0; i < 10; i = i+1) begin
-		for (j = 0; j < 10; j = j+1) begin
-            assign arena_0[j] = o_arena_0[j];
-			assign bombs_0[j] = o_bombs_0[j];
+    for (i = 0; i < 100; i = i+1) begin
+            assign arena_0[i] = o_arena_0[i];
+			assign bombs_0[i] = o_bombs_0[i];
 			assign bombs_1[i] = o_bombs_1[i];
-		end
     end
+	
+	assign playerAx = o_playerAx;
+    assign playerAy = o_playerAy;
+    assign playerBx = o_playerBx;
+    assign playerBy = o_playerBy;
+	assign playerAhealth = o_playerAhealth;
+    assign playerBhealth = o_playerBhealth;
 	
 	/*
     // initialize players and blcks
@@ -112,13 +119,13 @@ module bomberman(
     assign arena[76] = 1;
     assign arena[84] = 1; */
 
-    reset reset_(
+    initialize reset_(
         .arena_0      (o_arena_0),
         .bombs_0      (o_bombs_0),
         .bombs_1      (o_bombs_1),
         .rst        (reset),
-        .healthA    (playerAhealth),
-        .healthB    (playerBhealth),
+        .healthA    (o_playerAhealth),
+        .healthB    (o_playerBhealth),
         .game_state (game_state)
     );
 
@@ -179,8 +186,8 @@ module bomberman(
         .Center     (btnS_crt),
 	    .playerB    (playerBinput),
         .onedim_Arena          (arena_0),
-	    .Bomb_bit0          (bomb_0),
-	    .Bomb_bit1          (bomb_1),
+	    .Bomb_bit0          (bombs_0),
+	    .Bomb_bit1          (bombs_1),
         .clk        (clk),
 	    .crt_Arena_bit0  (o_arena_0),
 	    .crt_Bomb_bit0   (o_bombs_0),
@@ -199,12 +206,12 @@ module bomberman(
     bomb bomb_(
         .o_updatedBombMap_0 (o_bombs_0),
         .o_updatedBombMap_1 (o_bombs_1), 
-        .o_healthA      (healthA), 
-        .o_healthB      (healthB),
+        .o_healthA      (o_playerAhealth), 
+        .o_healthB      (o_playerBhealth),
         .i_curBombMap_0     (bombs_0),
         .i_curBombMap_1     (bombs_1),
-        .healthA        (healthA), 
-        .healthB        (healthB), 
+        .healthA        (playerAhealth), 
+        .healthB        (playerBhealth), 
         .bombClk        (bomb_clk), 
         .rst            (reset),
         .playerAx       (playerAx),
@@ -222,6 +229,7 @@ module bomberman(
         .an         (an)
     );
 
+/*
     // VGA
     vga640x480 vga_(
         .pixel_clk      (vga_clk), //pixel clock: 25MHz
@@ -231,8 +239,8 @@ module bomberman(
         .player2_x      (playerBx),
         .player2_y      (playerBy),
 	    .Arena_bit0          (arena_0),
-	    .Bomb_bit0          (bomb_0),
-	    .Bomb_bit1          (bomb_1),
+	    .Bomb_bit0          (bombs_0),
+	    .Bomb_bit1          (bombs_1),
         .game_over      (game_state), // three values: player 1 win, player 2 win, draw
         .hsync          (hsync), //horizontal sync out
         .vsync          (vsync), //vertical sync out
@@ -240,7 +248,7 @@ module bomberman(
         .green          (green), //green vga output
         .blue           (blue)//blue vga output
     );
-
+*/
 endmodule
 
 
