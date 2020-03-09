@@ -4,6 +4,8 @@ module chara_control(
 	input Left,
 	input Right,
 	
+	input rst,
+	
 	input [3:0] playerB,
 	
 	input Center,
@@ -66,10 +68,18 @@ module chara_control(
 	
 	integer i,j;
 
-	always @ (posedge clk or posedge bomb_clk) begin
+	always @ (posedge clk or posedge bomb_clk or posedge rst) begin
 	
-		if (bomb_clk) 
+		if (rst) begin
+			o_playerAx <= 1;
+			o_playerBx <= 8;
+			o_playerAy <= 1;
+			o_playerBy <= 8;
+		end
+			
+		else if (bomb_clk) 
 		begin
+			
 			if (Center) begin
 				if (temp_Bomb[playerAx][playerAy] == 0) 
 				begin
@@ -84,6 +94,7 @@ module chara_control(
 				end
 			end
 		end
+		
 	
 		else 
 		begin 
