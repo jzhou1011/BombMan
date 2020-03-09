@@ -66,10 +66,6 @@ module bomberman(
 	wire [99:0] arena_0_inter;
     wire [99:0] bombs_0;
 	wire [99:0] bombs_1;
-	wire [99:0] bombs_0_inter;
-	wire [99:0] bombs_1_inter;
-	wire [99:0] bombs_0_inter_2;
-	wire [99:0] bombs_1_inter_2;
 	wire [99:0] o_arena_0;
     wire [99:0] o_bombs_0;
     wire [99:0] o_bombs_1;
