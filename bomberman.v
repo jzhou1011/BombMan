@@ -2,9 +2,9 @@ module bomberman(
     //output
     seg, an, hsync, vsync, red, green, blue,
     //input
-    clk, reset_sw, JA, btnS, btnR, btnL, btnD, btnU
+    clk, sw, JA, btnS, btnR, btnL, btnD, btnU
 );
-
+	
     input [7:0] JA;
     input clk;
     input btnR;
@@ -12,11 +12,15 @@ module bomberman(
     input btnL;
     input btnU;
     input btnD;
-    input reset_sw;
+    input [7:0] sw;
+	
+	wire reset_sw;
+	assign reset_sw = sw[7];
 	
 	reg reset = 1;
-	always @ (posedge reset_sw)
+	always @ (reset_sw)
 	begin
+		//if ()
 		reset = ~reset;
 	end
 
@@ -55,12 +59,17 @@ module bomberman(
     wire [3:0] o_playerBy;
 
     // arena and bombs status
-    wire [1:0] game_state = 0;
+    wire [1:0] game_state;
 
     // flattened array
 	wire [99:0] arena_0;
+	wire [99:0] arena_0_inter;
     wire [99:0] bombs_0;
 	wire [99:0] bombs_1;
+	wire [99:0] bombs_0_inter;
+	wire [99:0] bombs_1_inter;
+	wire [99:0] bombs_0_inter_2;
+	wire [99:0] bombs_1_inter_2;
 	wire [99:0] o_arena_0;
     wire [99:0] o_bombs_0;
     wire [99:0] o_bombs_1;
@@ -120,13 +129,10 @@ module bomberman(
     assign arena[84] = 1; */
 
     initialize reset_(
-        .arena_0      (o_arena_0),
-        .bombs_0      (o_bombs_0),
-        .bombs_1      (o_bombs_1),
-        .rst        (reset),
-        .healthA    (o_playerAhealth),
-        .healthB    (o_playerBhealth),
-        .game_state (game_state)
+        .arena_0      (arena_0_inter),
+        .bombs_0      (bombs_0_inter),
+        .bombs_1      (bombs_1_inter),
+        .rst        (reset)
     );
 
     // read player1 input from keypad
@@ -185,13 +191,13 @@ module bomberman(
 	    .Right      (btnR_crt),
         .Center     (btnS_crt),
 	    .playerB    (playerBinput),
-        .onedim_Arena          (arena_0),
-	    .Bomb_bit0          (bombs_0),
-	    .Bomb_bit1          (bombs_1),
+        .onedim_Arena          (arena_0_inter),
+	    .Bomb_bit0          (bombs_0_inter),
+	    .Bomb_bit1          (bombs_1_inter),
         .clk        (clk),
 	    .crt_Arena_bit0  (o_arena_0),
-	    .crt_Bomb_bit0   (o_bombs_0),
-	    .crt_Bomb_bit1   (o_bombs_1),
+	    .crt_Bomb_bit0   (bombs_0_inter_2),
+	    .crt_Bomb_bit1   (bombs_1_inter_2),
         .bomb_clk   (bomb_clk),
         .playerAx   (playerAx),
 	    .playerAy   (playerAy),
@@ -200,7 +206,8 @@ module bomberman(
         .o_playerAx (o_playerAx),
         .o_playerAy (o_playerAy),
         .o_playerBx (o_playerBx),
-        .o_playerBy (o_playerBy)
+        .o_playerBy (o_playerBy),
+		.rst	(reset)
     );
 
     bomb bomb_(
@@ -208,8 +215,8 @@ module bomberman(
         .o_updatedBombMap_1 (o_bombs_1), 
         .o_healthA      (o_playerAhealth), 
         .o_healthB      (o_playerBhealth),
-        .i_curBombMap_0     (bombs_0),
-        .i_curBombMap_1     (bombs_1),
+        .i_curBombMap_0     (bombs_0_inter_2),
+        .i_curBombMap_1     (bombs_1_inter_2),
         .healthA        (playerAhealth), 
         .healthB        (playerBhealth), 
         .bombClk        (bomb_clk), 
@@ -229,7 +236,7 @@ module bomberman(
         .an         (an)
     );
 
-/*
+
     // VGA
     vga640x480 vga_(
         .pixel_clk      (vga_clk), //pixel clock: 25MHz
@@ -248,7 +255,7 @@ module bomberman(
         .green          (green), //green vga output
         .blue           (blue)//blue vga output
     );
-*/
+
 endmodule
 
 
