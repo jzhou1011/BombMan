@@ -226,6 +226,12 @@ module bomberman(
 	    .playerAy       (playerAy),
 	    .playerBx       (playerBx),
 	    .playerBy       (playerBy),
+        .bombA_x	    (bombA_x),
+		.bombA_y	    (bombA_y),
+		.bombA_v	    (bombA_v),
+		.bombB_x	    (bombB_x),
+		.bombB_y	    (bombB_y),
+		.bombB_v	    (bombB_v),
 		.game_state		(game_state)
     );
 

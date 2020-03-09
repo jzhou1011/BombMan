@@ -8,6 +8,7 @@ module bomb(
     // Inputs
     i_curBombMap_0, i_curBombMap_1, healthA, healthB,
     playerAx, playerAy, playerBx, playerBy,
+    bombA_x, bombA_y, bombA_v, bombB_x, bombB_y, bombB_v,
     bombClk, rst, game_state
 );
 
@@ -17,6 +18,8 @@ module bomb(
     input [1:0] healthA, healthB;
     input bombClk;
     input rst;
+    input bombA_v, bombB_x, bombB_y, bombB_v;
+    input [3:0] bombA_x, bombA_y, bombB_x, bombB_y;
     output reg [99:0] o_updatedBombMap_0;
     output reg [99:0] o_updatedBombMap_1;
     output reg [1:0] o_healthA, o_healthB;
@@ -93,6 +96,14 @@ module bomb(
 			end
 			else if(o_healthB == 0)
 				game_state <= 1;
+            if (bombA_v == 1) begin
+                o_updatedBombMap_1[10 * bombA_x + bombA_y] <= 0;
+                o_updatedBombMap_0[10 * bombA_x + bombA_y] <= 1;
+            end
+            if (bombB_v == 1) begin
+                o_updatedBombMap_1[10 * bombB_x + bombB_y] <= 0;
+                o_updatedBombMap_0[10 * bombB_x + bombB_y] <= 1;
+            end
         end
     end
 

@@ -4,8 +4,6 @@ module initialize(
 );
 
 	output reg [99:0] arena_0;
-    output reg [99:0] bombs_0;
-    output reg [99:0] bombs_1;
 
     input rst;
     // output reg [1:0] healthB;
@@ -16,8 +14,6 @@ module initialize(
         // initialize arena and bombs
         for (i = 0; i < 10; i = i+1) begin
 	    	for (j = 0; j < 10; j = j+1) begin
-                bombs_0[i*10+j] <= 0;
-                bombs_1[i*10+j] <= 0;
                 if (i == 0 || i == 9 || j == 0 || j == 9) begin
                     arena_0[i*10+j] <= 1;
                 end
