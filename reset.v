@@ -1,6 +1,6 @@
 module initialize(
 	arena_0, bombs_0, bombs_1, 
-    rst, healthA, healthB, game_state
+    rst
 );
 
 	output reg [99:0] arena_0;
@@ -8,7 +8,7 @@ module initialize(
     output reg [99:0] bombs_1;
 
     input rst;
-    output reg [1:0] healthA, healthB, game_state;
+    // output reg [1:0] healthB;
 	reg [3:0] i,j;
 
     always @ (posedge rst)
@@ -42,10 +42,6 @@ module initialize(
         arena_0[63] <= 1;
         arena_0[76] <= 1;
         arena_0[84] <= 1;
-
-        healthA <= 3;
-        healthB <= 3;
-        game_state <= 0;
     end  
 
 endmodule
