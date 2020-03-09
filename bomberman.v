@@ -81,6 +81,14 @@ module bomberman(
 
     genvar i; // for initialize
 
+    // for bomb locations
+    wire [3:0] bombA_x;
+    wire [3:0] bombA_y;
+    wire bombA_v;
+    wire [3:0] bombB_x;
+    wire [3:0] bombB_y;
+    wire bombB_v;
+
     // clocks
     clockDivider clockDivider_(
 	    .clk		(clk),
@@ -192,12 +200,14 @@ module bomberman(
         .Center     (btnS_crt),
 	    .playerB    (playerBinput),
         .onedim_Arena          (arena_0_inter),
-	    .bombA_x	(),
-		.bombA_y	(),
-		.bombA_v	(),
-		.bombB_x	(),
-		.bombB_y	(),
-		.bombB_v	(),
+	    .bombA_x	(bombA_x),
+		.bombA_y	(bombA_y),
+		.bombA_v	(bombA_v),
+		.bombB_x	(bombB_x),
+		.bombB_y	(bombB_y),
+		.bombB_v	(bombB_v),
+        .Bomb_bit0  (bombs_0),
+	    .Bomb_bit1  (bombs_1),
         .clk        (clk),
 	    .crt_Arena_bit0  (o_arena_0),
         .playerAx   (playerAx),

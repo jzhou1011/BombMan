@@ -11,16 +11,12 @@ module chara_control(
 	input Center,
 	
 	input [99:0] onedim_Arena,
-	input [99:0] Bomb_bit0,
-	input [99:0] Bomb_bit1,
 	
 	input clk,
 	input bomb_clk,
 	
 	//output
 	output [99:0] crt_Arena_bit0,
-	output [99:0] crt_Bomb_bit0,
-	output [99:0] crt_Bomb_bit1,
 
 
 	input [3:0] playerAx,
@@ -31,7 +27,18 @@ module chara_control(
 	output reg [3:0] o_playerAx,
 	output reg [3:0] o_playerAy,
 	output reg [3:0] o_playerBx,
-	output reg [3:0] o_playerBy
+	output reg [3:0] o_playerBy,
+
+	output reg [3:0] bombA_x,
+	output reg [3:0] bombA_y,
+	output reg [3:0] bombA_v,
+	output reg [3:0] bombB_x,
+	output reg [3:0] bombB_y,
+	output reg [3:0] bombB_v,
+
+	input [99:0] Bomb_bit0,
+	input [99:0] Bomb_bit1
+
     );
 	
 	wire [1:0] onedim_Bomb [0:99];
@@ -64,7 +71,6 @@ module chara_control(
 	reg [3:0] temp [0:1];
 	
 	reg temp_Arena [0:9][0:9];
-	reg [1:0] temp_Bomb [0:9][0:9];
 	
 	integer i,j;
 
@@ -77,27 +83,38 @@ module chara_control(
 			o_playerBy <= 8;
 		end
 			
-		else if (bomb_clk) 
+		else 
 		begin
-			
+			// place bombs
 			if (Center) begin
-				if (temp_Bomb[playerAx][playerAy] == 0) 
+				if (Bomb[playerAx][playerAy] == 0) 
 				begin
-					temp_Bomb[playerAx][playerAy] <= 3;
+					bombA_v = 1;
+					bombA_x = playerAx;
+					bombA_y = playerAy;
+
 				end
+				else
+				bombA_v = 0;
 			end
+			else
+				bombA_v = 0;
 	
 			if (playerB == 4'b0101) begin // 5
-				if (temp_Bomb[playerBx][playerBy] == 0) 
+				if (Bomb[playerBx][playerBy] == 0) 
 				begin
-					temp_Bomb[playerBx][playerBy] <= 3;
+					bombB_v = 1;
+					bombB_x = playerBx;
+					bombB_y = playerBy;
 				end
+				else
+					bombB_v = 0;
 			end
-		end
-		
-	
-		else 
-		begin 
+
+			else
+					bombB_v = 0;
+
+			// players
 			for (i = 0; i < 10; i = i+1)
 			begin
 				for (j = 0; j < 10; j = j+1) 
@@ -197,8 +214,6 @@ module chara_control(
 		for (n = 0; n < 10; n = n+1) 
 		begin
 			assign crt_Arena_bit0[m*10 + n] = temp_Arena[m][n];
-			assign crt_Bomb_bit0[m*10 + n] = temp_Bomb[m][n][0];
-			assign crt_Bomb_bit1[m*10 + n] = temp_Bomb[m][n][1];
 		end
 	end
 	
