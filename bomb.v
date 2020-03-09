@@ -32,6 +32,9 @@ module bomb(
                     o_updatedBombMap_1[10 * x + y] <= 0;
                 end
             end
+			o_healthA <= 3;
+			o_healthB <= 3;
+			game_state <= 0;
         end
         else begin
             for (x = 1; x<9; x = x+1) begin
