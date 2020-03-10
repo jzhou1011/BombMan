@@ -14,7 +14,7 @@ module bomberman(
     input btnD;
     input [7:0] sw;
 	
-	wire reset_sw;
+/*	wire reset_sw;
 	assign reset_sw = sw[7];
 	
 	reg reset = 1;
@@ -23,7 +23,7 @@ module bomberman(
 		//if ()
 		reset = ~reset;
 	end
-
+*/
     output [7:0] seg;
     output [3:0] an;
 
@@ -88,7 +88,7 @@ module bomberman(
     // clocks
     clockDivider clockDivider_(
 	    .clk		(clk),
-        .rst        (reset),
+        .rst        (sw[7]),
 	    .oneHzClock	(bomb_clk),
 	    .VGAClock	(vga_clk),
         .segClock (faster_clk)
@@ -134,7 +134,7 @@ module bomberman(
 
     initialize reset_(
         .arena_0      (arena_0_inter),
-        .rst        (reset)
+        .rst        (sw[7])
     );
 
     // read player1 input from keypad
@@ -212,7 +212,7 @@ module bomberman(
         .o_playerAy (o_playerAy),
         .o_playerBx (o_playerBx),
         .o_playerBy (o_playerBy),
-		.rst	(reset)
+		.rst	(sw[7])
     );
 
     bomb bomb_(
@@ -225,7 +225,7 @@ module bomberman(
         .healthA        (playerAhealth), 
         .healthB        (playerBhealth), 
         .bombClk        (bomb_clk), 
-        .rst            (reset),
+        .rst            (sw[7]),
         .playerAx       (playerAx),
 	    .playerAy       (playerAy),
 	    .playerBx       (playerBx),
@@ -251,7 +251,7 @@ module bomberman(
     // VGA
     vga640x480 vga_(
         .pixel_clk      (vga_clk), //pixel clock: 25MHz
-        .rst            (reset), //asynchronous reset
+        .rst            (sw[7]), //asynchronous reset
         .player1_x      (playerAx),
         .player1_y      (playerAy),
         .player2_x      (playerBx),
