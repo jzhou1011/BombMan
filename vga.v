@@ -148,15 +148,15 @@ begin
 			normalized_vc <= vc - vbp;
 			normalized_hc <= hc - vbp;
 			
-			modulus_i <= hc / block_len;
-			modulus_j <= vc / block_wid;
+			modulus_i <= vc / block_wid;
+			modulus_j <= hc / block_len;
 			
-			if (modulus_i == player1_y && modulus_j == player1_y)
+			if (modulus_i == player1_x && modulus_j == player1_y)
 			begin
 				pixel_crt <= 6;
 			end
 			
-			else if (modulus_i == player2_y && modulus_j == player2_y)
+			else if (modulus_i == player2_x && modulus_j == player2_y)
 			begin
 				pixel_crt <= 7;
 			end
