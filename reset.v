@@ -1,5 +1,5 @@
 module initialize(
-	arena_0, bombs_0, bombs_1, 
+	arena_0,
     rst
 );
 
@@ -22,7 +22,7 @@ module initialize(
                 end
 	    	end
         end
-
+ 
         // initialize players and blcks
         arena_0[13] <= 1; // blocks
         arena_0[17] <= 1;

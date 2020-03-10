@@ -18,7 +18,7 @@ module bomb(
     input [1:0] healthA, healthB;
     input bombClk;
     input rst;
-    input bombA_v, bombB_x, bombB_y, bombB_v;
+    input bombA_v, bombB_v;
     input [3:0] bombA_x, bombA_y, bombB_x, bombB_y;
     output reg [99:0] o_updatedBombMap_0;
     output reg [99:0] o_updatedBombMap_1;
@@ -27,7 +27,7 @@ module bomb(
 	
 	integer x,y;
 
-    always @ (posedge bombClk or posedge rst) begin
+    always @ (posedge bombClk) begin
         if (rst) begin
             for (x = 1; x<9; x = x+1) begin
                 for (y=1; y<9; y=y+1) begin

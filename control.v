@@ -13,11 +13,10 @@ module chara_control(
 	input [99:0] onedim_Arena,
 	
 	input clk,
-	input bomb_clk,
 	
 	//output
 	output [99:0] crt_Arena_bit0,
-
+ 
 
 	input [3:0] playerAx,
 	input [3:0] playerAy,
@@ -74,7 +73,7 @@ module chara_control(
 	
 	integer i,j;
 
-	always @ (posedge clk or posedge bomb_clk or posedge rst) begin
+	always @ (posedge clk) begin
 	
 		if (rst) begin
 			o_playerAx <= 1;
@@ -86,33 +85,23 @@ module chara_control(
 		else 
 		begin
 			// place bombs
-			if (Center) begin
-				if (Bomb[playerAx][playerAy] == 0) 
-				begin
-					bombA_v = 1;
-					bombA_x = playerAx;
-					bombA_y = playerAy;
-
-				end
-				else
-				bombA_v = 0;
+			if (Center && (Bomb[playerAx][playerAy] == 0))
+			begin
+				bombA_v <= 1;
+				bombA_x <= playerAx;
+				bombA_y <= playerAy;
 			end
 			else
-				bombA_v = 0;
-	
-			if (playerB == 4'b0101) begin // 5
-				if (Bomb[playerBx][playerBy] == 0) 
-				begin
-					bombB_v = 1;
-					bombB_x = playerBx;
-					bombB_y = playerBy;
-				end
-				else
-					bombB_v = 0;
+				bombA_v <= 0;
+				
+			if ((playerB == 4'b0101) && (Bomb[playerBx][playerBy] == 0))
+			begin
+				bombB_v <= 1;
+				bombB_x <= playerBx;
+				bombB_y <= playerBy;
 			end
-
 			else
-					bombB_v = 0;
+				bombB_v <= 0;
 
 			// players
 			for (i = 0; i < 10; i = i+1)
@@ -120,7 +109,7 @@ module chara_control(
 				for (j = 0; j < 10; j = j+1) 
 				begin
 					temp_Arena[i][j] <= Arena[i][j];
-					temp_Bomb[i][j] <= Bomb[i][j];
+					// temp_Bomb[i][j] <= Bomb[i][j];
 				end
 			end
 		
