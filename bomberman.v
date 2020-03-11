@@ -5,7 +5,7 @@ module bomberman(
     clk, sw, JA, btnS, btnR, btnL, btnD, btnU//, RsRx, RsTx
 );
 	
-    input [7:0] JA;
+    inout [7:0] JA;
     input clk;
     input btnR;
     input btnS;
@@ -151,7 +151,7 @@ module bomberman(
     keypad keypad_(
         .clk    (clk),
         .row    (JA[7:4]),
-	    //.col    (JA[3:0]),
+	    .col    (JA[3:0]),
         .decode (playerBinput)
     );
 

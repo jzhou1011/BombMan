@@ -2,14 +2,14 @@ module keypad(
 	// input
 	clk,
 	row,
-	// col,
+	col,
 	// output
 	decode
 	);	
 
 	input clk;				// 100MHz onboard clock
 	input [3:0] row;
-	// input [3:0] col;
+	output reg [3:0] col;
 	output reg [3:0] decode;	// Output data
 
 	// Count register
@@ -19,7 +19,7 @@ module keypad(
 		// 1ms
 		if (sclk == 20'b00011000011010100000) begin
 			//C1
-			// col <= 4'b0111;
+			col <= 4'b0111;
 			sclk <= sclk + 1'b1;
 		end
 		
@@ -47,7 +47,7 @@ module keypad(
 		// 2ms
 		else if(sclk == 20'b00110000110101000000) begin
 			//C2
-			// col<= 4'b1011;
+			col<= 4'b1011;
 			sclk <= sclk + 1'b1;
 		end
 		
@@ -75,7 +75,7 @@ module keypad(
 		//3ms
 		else if(sclk == 20'b01001001001111100000) begin
 			//C3
-			// col<= 4'b1101;
+			col<= 4'b1101;
 			sclk <= sclk + 1'b1;
 		end
 		
@@ -103,7 +103,7 @@ module keypad(
 		//4ms
 		else if(sclk == 20'b01100001101010000000) begin
 			//C4
-			// col<= 4'b1110;
+			col<= 4'b1110;
 			sclk <= sclk + 1'b1;
 		end
 
