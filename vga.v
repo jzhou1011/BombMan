@@ -295,22 +295,22 @@ begin
 				end
 				else begin
 					pixel_crt <= 9; // change color later
-					if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+13)))
+					if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+13)))
 						pixel_crt <= 8;
-					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+26)))
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+26)))
 						pixel_crt <= 8;
-					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+39)))
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+39)))
 						pixel_crt <= 8;
-					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+52)))
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+52)))
 						pixel_crt <= 8;
 
-					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+9)))
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+9)))
 						pixel_crt <= 8;
-					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+19)))
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+19)))
 						pixel_crt <= 8;
-					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+29)))
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+29)))
 						pixel_crt <= 8;
-					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+39)))
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+39)))
 						pixel_crt <= 8;
 				end
 			end
