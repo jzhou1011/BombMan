@@ -293,10 +293,10 @@ begin
 					pixel_crt <= 0;
 
 				// eyes
-				else if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+30)) ))
+				if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+30)) ))
 					pixel_crt <= 0;
 
-				else if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+34)) ))
+				if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+34)) ))
 					pixel_crt <= 0;
 
 				
@@ -351,10 +351,10 @@ begin
 					pixel_crt <= 8;
 
 				// eyes
-				else if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+27)) ))
+				if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+27)) ))
 					pixel_crt <= 0;
 
-				else if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+37)) ))
+				if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+37)) ))
 					pixel_crt <= 0;
 				
 				if (game_over == 3) begin
