@@ -59,6 +59,23 @@ parameter block_wid = width/10;
 wire onedim_Arena [0:99];
 wire [1:0] onedim_Bomb [0:99];
 
+/*	 
+    // initialize players and blcks
+    arena[1][3] = 1; // blocks
+    arena[1][7] = 1;
+    arena[2][4] = 1;
+    arena[3][2] = 1;
+    arena[3][4] = 1;
+    arena[3][8] = 1;
+    arena[4][6] = 1;
+    arena[5][1] = 1;
+    arena[5][6] = 1;
+    arena[5][7] = 1;
+    arena[6][2] = 1;
+    arena[6][3] = 1;
+    arena[7][6] = 1;
+    arena[8][4] = 1;
+*/
 	
 genvar flatten_i, flatten_j;
 	
@@ -76,6 +93,7 @@ end
 wire Arena [0:9][0:9];
 wire [1:0] Bomb [0:9][0:9];
 
+
 	
 for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
 begin
@@ -83,23 +101,27 @@ begin
 	begin
 		assign Arena[flatten_i][flatten_j] = onedim_Arena[flatten_i*10+flatten_j];
 		assign Bomb[flatten_i][flatten_j] = onedim_Bomb[flatten_i*10+flatten_j];
+		//assign Arena[flatten_i][flatten_j] = constant_arena[flatten_i][flatten_j];
+		//assign Bomb[flatten_i][flatten_j] = constant_bomb[flatten_i][flatten_j];
 	end
 end	
 
 // video structure constants
-parameter hpixels = 800;// horizontal pixels per line
-parameter vlines = 521; // vertical lines per frame
+parameter hpixels = 800;//800;// horizontal pixels per line
+parameter vlines = 521;//521; // vertical lines per frame
 parameter hpulse = 96; 	// hsync pulse length
 parameter vpulse = 2; 	// vsync pulse length
-parameter hbp = 80; 	// end of horizontal back porch
+parameter hbp = 120; 	// end of horizontal back porch
 parameter hfp = hbp + length; 	// beginning of horizontal front porch
-parameter vbp = 31; 		// end of vertical back porch
+parameter vbp = 61; 		// end of vertical back porch
 parameter vfp = vbp + width; 	// beginning of vertical front porch
 
 // active horizontal video is therefore: 784 - 144 = 640
 // active vertical video is therefore: 511 - 31 = 480
 reg [9:0] hc;
 reg [9:0] vc;
+
+
 
 always @(posedge pixel_clk or posedge rst)
 begin
@@ -132,9 +154,9 @@ integer modulus_i, modulus_j;
 
 ////////////////////////////////////////
 
-reg pixel_crt;
-reg normalized_vc; // These are just for us to better retrieve value from pixel_arrays
-reg normalized_hc;
+reg [3:0] pixel_crt;
+reg [9:0] normalized_vc; // These are just for us to better retrieve value from pixel_arrays
+reg [9:0] normalized_hc;
 
 
 always @(*)
@@ -149,15 +171,18 @@ begin
 			normalized_hc <= hc - hbp;
 			
 			modulus_i <= normalized_vc / block_wid;
-			modulus_j <= normalized_hc / block_len;
+			modulus_j <= normalized_hc/ block_len;
 			
+			//modulus_i <= normalized_vc / block_wid;
+			//modulus_j <= normalized_hc/ block_len;
+
 			if ((modulus_i == player1_x) && (modulus_j == player1_y))
 			begin
-				pixel_crt <= 6;
+				pixel_crt <= 5;
 				if((normalized_vc == player1_x*48) && (normalized_hc == (player1_y+30)))
 					pixel_crt <= 8;
 				else if ((normalized_vc == (player1_x*48+1)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
-
+					pixel_crt <= 8;
 				else if ((normalized_vc == (player1_x*48+2)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
 					pixel_crt <= 8;        
 				else if ((normalized_vc == (player1_x*48+3)) && ((normalized_hc > (player1_y+26)) && (normalized_hc < (player1_y+34)) ))
@@ -230,9 +255,9 @@ begin
 					pixel_crt <= 8;
 			end
 			
-			else if (modulus_i == player2_x && modulus_j == player2_y)
+			else if ((modulus_i == player2_x) && (modulus_j == player2_y))
 			begin
-				pixel_crt <= 7;
+				pixel_crt <= 6;
 			end
 			
 			else
@@ -241,14 +266,16 @@ begin
 				if (pixel_crt == 0)
 				begin
 					if (Bomb[modulus_i][modulus_j] != 0)
-						pixel_crt <= Bomb[modulus_i][modulus_j] + 2; // 3;
+						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
 				end
 			end
 			
 			case(pixel_crt) 
 			0:	begin red <= 3'b111; green <= 3'b111; blue <= 2'b11; end // background color
-			1:  begin red <= 3'b110; green <= 3'b010; blue <= 2'b11; end // block color
-			2:  begin red <= 3'b101; green <= 3'b001; blue <= 2'b11; end // player1 color
+			1:  begin red <= 3'b000; green <= 3'b111; blue <= 2'b11; end // block color
+			//1:  begin red <= 3'b110; green <= 3'b010; blue <= 2'b11; end // block color
+			
+			2:  begin red <= 3'b101; green <= 3'b001; blue <= 2'b11; end // bomb1
 			//
 			/*2: begin
 			paint_char paint_char1(
@@ -262,7 +289,7 @@ begin
 			.blue (blue) //blue vga output
 			);end*/
 			////////
-			3:  begin red <= 3'b100; green <= 3'b000; blue <= 2'b11; end // player2 color
+			3:  begin red <= 3'b100; green <= 3'b000; blue <= 2'b11; end // bomb2
 			//
 			/*3: begin
 			paint_char paint_char2(
@@ -276,10 +303,11 @@ begin
 			.blue (blue) //blue vga output
 			);end*/
 			///////////////
-			4:  begin red <= 3'b011; green <= 3'b100; blue <= 2'b00; end // new bomb color
-			5:  begin red <= 3'b010; green <= 3'b010; blue <= 2'b00; end // bomb after 1 sec color
-			6:  begin red <= 3'b001; green <= 3'b001; blue <= 2'b00; end // exploding color
-			7:  begin red <= 3'b000; green <= 3'b111; blue <= 2'b00; end // exploding color
+			4:  begin red <= 3'b111; green <= 3'b000; blue <= 2'b00; end // bomb3
+			5:  begin red <= 3'b000; green <= 3'b111; blue <= 2'b00; end // player1
+			6:  begin red <= 3'b000; green <= 3'b000; blue <= 2'b11; end // player2
+			7:  begin red <= 3'b000; green <= 3'b100; blue <= 2'b00; end // ??
+			8: begin red <= 0; green <= 0; blue <= 0; end
 			endcase
 		end
 		
