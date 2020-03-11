@@ -38,6 +38,8 @@ module bomberman(
 
     // player1: use keypad to control character
     wire [3:0] playerBinput;
+	wire [3:0] playerBinput2;
+	
 
     // player2: use buttons to control character
     wire btnS_crt;
@@ -148,16 +150,17 @@ module bomberman(
     );
 
     LFSR random(
-	.clk	(char_clk),
-	.rst	(sw[7]),
-	.rdn    (playerBinput)
-	)
-    //keypad keypad_(
-    //    .clk    (clk),
-    //    .row    (JA[7:4]),
-	//    //.col    (JA[3:0]),
-    //    .decode (playerBinput)
-    //);
+	.clock	(char_clk),
+	.reset	(sw[7]),
+	.rnd    (playerBinput)
+	);
+	
+    keypad keypad_(
+        .clk    (clk),
+        .row    (JA[7:4]),
+	    .col    (JA[3:0]),
+        .decode (playerBinput2)
+    );
 
 
     // read player2 input from buttons: use debouncing
@@ -207,7 +210,9 @@ module bomberman(
 	    .Left       (btnL_crt),
 	    .Right      (btnR_crt),
         .Center     (btnS_crt),
-	    .playerB    (playerBinput),
+	    .playerB1    (playerBinput),
+		.playerB2    (playerBinput2),
+		.source	(sw[0]),
         .onedim_Arena          (arena_0_inter),
 	    .bombA_x	(bombA_x),
 		.bombA_y	(bombA_y),

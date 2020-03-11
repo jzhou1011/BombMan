@@ -6,7 +6,10 @@ module chara_control(
 	
 	input rst,
 	
-	input [3:0] playerB,
+	input [3:0] playerB1,
+	input [3:0] playerB2,
+	
+	input source,
 	
 	input Center,
 	
@@ -53,9 +56,11 @@ module chara_control(
 	end
 	endgenerate
 	
-		
+	reg [3:0] playerB;
 	wire Arena [0:9][0:9];
 	wire [1:0] Bomb [0:9][0:9];
+	
+	
 	
 		
 	for (flatten_i = 0; flatten_i < 10; flatten_i = flatten_i+1)
@@ -75,6 +80,10 @@ module chara_control(
 	integer i,j;
 
 	always @ (posedge clk) begin
+		if (source == 1)
+			playerB <= playerB1;
+	else
+		playerB <= playerB2;
 	
 		if (rst) begin
 			o_playerAx <= 1;

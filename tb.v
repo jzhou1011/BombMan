@@ -3,7 +3,7 @@
 
 module test;
     reg clk;
-    reg [7:0] JA;
+    wire [7:0] JA;
     reg btnS, btnR, btnL, btnD, btnU;
 	 //reg rst;
     
@@ -27,7 +27,6 @@ module test;
         // Initialize Inputs
         clk = 0;
         //rst = 0;
-        JA = 8'b00010000;
 		  vsync = 0;
 		  hsync = 0;
 		  sw = 0;
@@ -50,7 +49,6 @@ module test;
         #3000
         // Player A drops bomb at current position
         tskADropBomb;
-        tskBDropBomb;
 		  #300000 //3 * bomb period
 		  tskAMovesD;
 		  #1000
@@ -78,14 +76,7 @@ module test;
         end
     endtask
 
-    task tskBDropBomb;
-        begin
-            $display("...Player B drops a bomb");
-            JA = 8'b10110000;
-            #200000 //2*bomb period
-            JA = 8'b00010000;
-        end
-    endtask
+   
 	 
 	 task tskAMovesD;
 			begin
