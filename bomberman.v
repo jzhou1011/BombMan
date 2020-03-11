@@ -147,13 +147,18 @@ module bomberman(
         .rst        (sw[7])
     );
 
-    // read player1 input from keypad
-    keypad keypad_(
-        .clk    (clk),
-        .row    (JA[7:4]),
-	    .col    (JA[3:0]),
-        .decode (playerBinput)
-    );
+    LFSR random(
+	.clk	(char_clk),
+	.rst	(sw[7]),
+	.rdn    (playerBinput)
+	)
+    //keypad keypad_(
+    //    .clk    (clk),
+    //    .row    (JA[7:4]),
+	//    //.col    (JA[3:0]),
+    //    .decode (playerBinput)
+    //);
+
 
     // read player2 input from buttons: use debouncing
     debouncing debounce_S( 

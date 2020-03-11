@@ -1,7 +1,8 @@
+  
 module LFSR (
     input clock,
     input reset,
-    output [12:0] rnd 
+    output [3:0] rnd 
     );
  
 wire feedback = random[12] ^ random[3] ^ random[2] ^ random[0]; 
@@ -48,6 +49,7 @@ begin
   2: begin final_num <= 8; end
   3: begin final_num <= 6; end
   4: begin final_num <= 5; end
+  endcase
   
 
 end
