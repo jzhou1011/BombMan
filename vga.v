@@ -165,7 +165,7 @@ begin
 	// first check if we're within vertical active video range
 	if (vc >= vbp && vc <= vfp && hc >= hbp && hc <= hfp)
 	begin
-		if ((game_over == 0) || (game_over == 1) || (game_over == 2) || ) // check if game is still on
+		if ((game_over == 0) || (game_over == 1) || (game_over == 2) || (game_over == 3)) // check if game is still on
 		begin
 			normalized_vc <= vc - vbp;
 			normalized_hc <= hc - hbp;
@@ -253,6 +253,25 @@ begin
 					pixel_crt <= 8;        
 				else if ((normalized_vc == (player1_x*48+47)) && ((normalized_hc == (player1_y*64+23-1)) || (normalized_hc == (player1_y*64+39-1)) ))
 					pixel_crt <= 8;
+				
+				else if ((normalized_vc == (player1_x*48+6)) && ((normalized_hc == (player1_y*64+24)) || (normalized_hc == (player1_y*64+32)) ))
+					pixel_crt <= 0;
+					
+				if (game_over == 3)begin
+					if ((normalized_vc == (player1_x*48+17)) && ((normalized_hc >= (player1_y*64 + 25)) && (normalized_hc < (player1_y*64 + 35))))
+						pixel_crt <= 0;end
+				else if (game_over == 2)begin
+					pixel_crt <= 0;end
+				else if (game_over == 1)begin
+					if ((normalized_vc == (player1_x*48+17)) && ((normalized_hc >= (player1_y*64 + 25)) && (normalized_hc < (player1_y*64 + 35))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player1_x*48+18)) && ((normalized_hc >= (player1_y*64 + 27)) && (normalized_hc < (player1_y*64 + 33))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player1_x*48+19)) && ((normalized_hc >= (player1_y*64 + 29)) && (normalized_hc < (player1_y*64 + 33))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player1_x*48+20)) && ((normalized_hc >= (player1_y*64 + 31)) && (normalized_hc < (player1_y*64 + 32))))
+						pixel_crt <= 0;
+				end
 			end
 			
 			else if ((modulus_i == player2_x) && (modulus_j == player2_y))
@@ -284,6 +303,24 @@ begin
 					pixel_crt <= 6;        
 				else if ((normalized_vc == (player2_x*48+47)) && ((normalized_hc == (player2_y*64+23)) || (normalized_hc == (player2_y*64+39)) ))
 					pixel_crt <= 6;
+				else if ((normalized_vc == (player2_x*48+6)) && ((normalized_hc == (player2_y*64+24)) || (normalized_hc == (player2_y*64+32)) ))
+					pixel_crt <= 8;
+				
+				if (game_over == 3) begin
+					if ((normalized_vc == (player2_x*48+17)) && ((normalized_hc >= (player2_y*64 + 25)) && (normalized_hc < (player2_y*64 + 35))))
+						pixel_crt <= 0; end
+				else if (game_over == 1)begin
+					pixel_crt <= 0;end
+				else if (game_over == 2)begin
+					if ((normalized_vc == (player2_x*48+17)) && ((normalized_hc >= (player2_y*64 + 25)) && (normalized_hc < (player2_y*64 + 35))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player2_x*48+18)) && ((normalized_hc >= (player2_y*64 + 27)) && (normalized_hc < (player2_y*64 + 33))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player2_x*48+19)) && ((normalized_hc >= (player2_y*64 + 29)) && (normalized_hc < (player2_y*64 + 33))))
+						pixel_crt <= 0;
+					else if ((normalized_vc == (player2_x*48+20)) && ((normalized_hc >= (player2_y*64 + 31)) && (normalized_hc < (player2_y*64 + 32))))
+						pixel_crt <= 0;
+				end
 			end
 			
 			else
@@ -305,8 +342,6 @@ begin
 						pixel_crt <= 8;
 					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64)))
 						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+63)))
-						pixel_crt <= 8;
 
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+9)))
 						pixel_crt <= 8;
@@ -317,8 +352,6 @@ begin
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+39)))
 						pixel_crt <= 8;
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+47)))
 						pixel_crt <= 8;
 				end
 			end
@@ -361,7 +394,6 @@ begin
 			6:  begin red <= 3'b000; green <= 3'b000; blue <= 2'b11; end // player2
 			7:  begin red <= 3'b000; green <= 3'b100; blue <= 2'b00; end // ??
 			8: begin red <= 0; green <= 0; blue <= 0; end
-			// new color
 			9: begin red <= 3'b110; green <= 3'b010; blue <= 2'b00; end 
 			endcase
 		end
