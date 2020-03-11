@@ -25,7 +25,7 @@ module bomb(
     output reg [1:0] o_healthA, o_healthB;
 	output reg [1:0] game_state;
 	
-	integer x,y;
+	integer x,y,i;
 
     always @ (posedge bombClk) begin
         if (rst) begin
@@ -87,20 +87,20 @@ module bomb(
 			    for (i = 1; i <= 3; i = i+1)
 			    begin
 				    if (x + i < 10) begin
-					    o_updatedBombMap_0[(x+i)*10+y] = 1
-					    o_updatedBombMap_1[(x+i)*10+y] = 1
+					    o_updatedBombMap_0[(x+i)*10+y] <= 1;
+					    o_updatedBombMap_1[(x+i)*10+y] <= 1;
 				    end
 				    if (x - i >= 0) begin
-					    o_updatedBombMap_0[(x-i)*10+y] = 1
-					    o_updatedBombMap_1[(x-i)*10+y] = 1
+					    o_updatedBombMap_0[(x-i)*10+y] <= 1;
+					    o_updatedBombMap_1[(x-i)*10+y] <= 1;
 				    end
 				    if (y + i < 10) begin
-					    o_updatedBombMap_0[x+y+i] = 1
-					    o_updatedBombMap_1[x+y+i] = 1
+					    o_updatedBombMap_0[x+y+i] <= 1;
+					    o_updatedBombMap_1[x+y+i] <= 1;
 				    end
-				    if (u - i < 10) begin
-					    o_updatedBombMap_0[x+y-i] = 1
-					    o_updatedBombMap_1[x+y-i] = 1
+				    if (y - i >= 0) begin
+					    o_updatedBombMap_0[x+y-i] <= 1;
+					    o_updatedBombMap_1[x+y-i] <= 1;
 				    end
 			    end
 			end
