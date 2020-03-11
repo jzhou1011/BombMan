@@ -175,83 +175,83 @@ begin
 			
 			//modulus_i <= normalized_vc / block_wid;
 			//modulus_j <= normalized_hc/ block_len;
-
+			
 			if ((modulus_i == player1_x) && (modulus_j == player1_y))
 			begin
-				pixel_crt <= 5;
-				if((normalized_vc == player1_x*48) && (normalized_hc == (player1_y+30)))
+				pixel_crt <= 0;
+				if((normalized_vc == player1_x*48) && (normalized_hc == (player1_y*64+30)))
 					pixel_crt <= 8;
-				else if ((normalized_vc == (player1_x*48+1)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
+				else if ((normalized_vc == (player1_x*48+1)) && ((normalized_hc > (player1_y*64+28)) && (normalized_hc < (player1_y*64+32)) ))
 					pixel_crt <= 8;
-				else if ((normalized_vc == (player1_x*48+2)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
+				else if ((normalized_vc == (player1_x*48+2)) && ((normalized_hc > (player1_y*64+28)) && (normalized_hc < (player1_y*64+32)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+3)) && ((normalized_hc > (player1_y+26)) && (normalized_hc < (player1_y+34)) ))
+				else if ((normalized_vc == (player1_x*48+3)) && ((normalized_hc > (player1_y*64+26)) && (normalized_hc < (player1_y*64+34)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+4)) && ((normalized_hc > (player1_y+26)) && (normalized_hc < (player1_y+34)) ))
+				else if ((normalized_vc == (player1_x*48+4)) && ((normalized_hc > (player1_y*64+26)) && (normalized_hc < (player1_y*64+34)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+5)) && ((normalized_hc > (player1_y+24)) && (normalized_hc < (player1_y+36)) ))
+				else if ((normalized_vc == (player1_x*48+5)) && ((normalized_hc > (player1_y*64+24)) && (normalized_hc < (player1_y*64+36)) ))
 					pixel_crt <= 8;       
-				else if ((normalized_vc == (player1_x*48+6)) && ((normalized_hc > (player1_y+24)) && (normalized_hc < (player1_y+36)) ))
+				else if ((normalized_vc == (player1_x*48+6)) && ((normalized_hc > (player1_y*64+24)) && (normalized_hc < (player1_y*64+36)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+7)) && ((normalized_hc > (player1_y+22)) && (normalized_hc < (player1_y+38)) ))
+				else if ((normalized_vc == (player1_x*48+7)) && ((normalized_hc > (player1_y*64+22)) && (normalized_hc < (player1_y*64+38)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+8)) && ((normalized_hc > (player1_y+22)) && (normalized_hc < (player1_y+38)) ))
+				else if ((normalized_vc == (player1_x*48+8)) && ((normalized_hc > (player1_y*64+22)) && (normalized_hc < (player1_y*64+38)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+9)) && ((normalized_hc > (player1_y+20)) && (normalized_hc < (player1_y+40)) ))
+				else if ((normalized_vc == (player1_x*48+9)) && ((normalized_hc > (player1_y*64+20)) && (normalized_hc < (player1_y*64+40)) ))
 					pixel_crt <= 8;
-				else if ((normalized_vc == (player1_x*48+10)) && ((normalized_hc > (player1_y+20)) && (normalized_hc < (player1_y+40)) ))
+				else if ((normalized_vc == (player1_x*48+10)) && ((normalized_hc > (player1_y*64+20)) && (normalized_hc < (player1_y*64+40)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+11)) && ((normalized_hc > (player1_y+18)) && (normalized_hc < (player1_y+42)) ))
+				else if ((normalized_vc == (player1_x*48+11)) && ((normalized_hc > (player1_y*64+18)) && (normalized_hc < (player1_y*64+42)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+12)) && ((normalized_hc > (player1_y+18)) && (normalized_hc < (player1_y+42)) ))
-					pixel_crt <= 8;        
-										   
-				else if ((normalized_vc == (player1_x*48+24)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+23)) && ((normalized_hc > (player1_y+28)) && (normalized_hc < (player1_y+32)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+22)) && ((normalized_hc > (player1_y+26)) && (normalized_hc < (player1_y+34)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+21)) && ((normalized_hc > (player1_y+26)) && (normalized_hc < (player1_y+34)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+20)) && ((normalized_hc > (player1_y+24)) && (normalized_hc < (player1_y+36)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+19)) && ((normalized_hc > (player1_y+24)) && (normalized_hc < (player1_y+36)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+18)) && ((normalized_hc > (player1_y+22)) && (normalized_hc < (player1_y+38)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+17)) && ((normalized_hc > (player1_y+22)) && (normalized_hc < (player1_y+38)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+16)) && ((normalized_hc > (player1_y+20)) && (normalized_hc < (player1_y+40)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+15)) && ((normalized_hc > (player1_y+20)) && (normalized_hc < (player1_y+40)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+14)) && ((normalized_hc > (player1_y+18)) && (normalized_hc < (player1_y+42)) ))
-					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+13)) && ((normalized_hc > (player1_y+18)) && (normalized_hc < (player1_y+42)) ))
+				else if ((normalized_vc == (player1_x*48+12)) && ((normalized_hc > (player1_y*64+18)) && (normalized_hc < (player1_y*64+42)) ))
 					pixel_crt <= 8;        
 										   
-				else if (((normalized_vc < (player1_x*48+39)) && (normalized_vc > player1_x*48)) && (normalized_hc == (player1_y+31)))
+				else if ((normalized_vc == (player1_x*48+24)) && ((normalized_hc > (player1_y*64+28)) && (normalized_hc < (player1_y*64+32)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+23)) && ((normalized_hc > (player1_y*64+28)) && (normalized_hc < (player1_y*64+32)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+22)) && ((normalized_hc > (player1_y*64+26)) && (normalized_hc < (player1_y*64+34)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+21)) && ((normalized_hc > (player1_y*64+26)) && (normalized_hc < (player1_y*64+34)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+20)) && ((normalized_hc > (player1_y*64+24)) && (normalized_hc < (player1_y*64+36)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+19)) && ((normalized_hc > (player1_y*64+24)) && (normalized_hc < (player1_y*64+36)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+18)) && ((normalized_hc > (player1_y*64+22)) && (normalized_hc < (player1_y*64+38)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+17)) && ((normalized_hc > (player1_y*64+22)) && (normalized_hc < (player1_y*64+38)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+16)) && ((normalized_hc > (player1_y*64+20)) && (normalized_hc < (player1_y*64+40)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+15)) && ((normalized_hc > (player1_y*64+20)) && (normalized_hc < (player1_y*64+40)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+14)) && ((normalized_hc > (player1_y*64+18)) && (normalized_hc < (player1_y*64+42)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+13)) && ((normalized_hc > (player1_y*64+18)) && (normalized_hc < (player1_y*64+42)) ))
 					pixel_crt <= 8;        
 										   
-				else if ((normalized_vc == (player1_x*48+32)) && ((normalized_hc > (player1_y+21)) && (normalized_hc < (player1_y+39)) ))
+				else if (((normalized_vc < (player1_x*48+39)) && (normalized_vc > player1_x*48)) && ((normalized_hc == (player1_y*64+30)) || (normalized_hc == (player1_y*64+31)) || (normalized_hc == (player1_y*64+29))) )
 					pixel_crt <= 8;        
 										   
-				else if ((normalized_vc == (player1_x*48+40)) && ((normalized_hc == (player1_y+30)) && (normalized_hc == (player1_y+32)) ))
+				else if ((normalized_vc == (player1_x*48+32)) && ((normalized_hc > (player1_y*64+21)) && (normalized_hc < (player1_y*64+39)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+41)) && ((normalized_hc == (player1_y+29)) && (normalized_hc == (player1_y+33)) ))
+										   
+				else if ((normalized_vc == (player1_x*48+40)) && ((normalized_hc == (player1_y*64+30)) || (normalized_hc == (player1_y*64+32)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+42)) && ((normalized_hc == (player1_y+28)) && (normalized_hc == (player1_y+34)) ))
+				else if ((normalized_vc == (player1_x*48+41)) && ((normalized_hc == (player1_y*64+29)) || (normalized_hc == (player1_y*64+33)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+43)) && ((normalized_hc == (player1_y+27)) && (normalized_hc == (player1_y+35)) ))
+				else if ((normalized_vc == (player1_x*48+42)) && ((normalized_hc == (player1_y*64+28)) || (normalized_hc == (player1_y*64+34)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+44)) && ((normalized_hc == (player1_y+26)) && (normalized_hc == (player1_y+36)) ))
+				else if ((normalized_vc == (player1_x*48+43)) && ((normalized_hc == (player1_y*64+27)) || (normalized_hc == (player1_y*64+35)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+45)) && ((normalized_hc == (player1_y+25)) && (normalized_hc == (player1_y+37)) ))
+				else if ((normalized_vc == (player1_x*48+44)) && ((normalized_hc == (player1_y*64+26)) || (normalized_hc == (player1_y*64+36)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+46)) && ((normalized_hc == (player1_y+24)) && (normalized_hc == (player1_y+38)) ))
+				else if ((normalized_vc == (player1_x*48+45)) && ((normalized_hc == (player1_y*64+25)) || (normalized_hc == (player1_y*64+37)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+47)) && ((normalized_hc == (player1_y+23)) && (normalized_hc == (player1_y+39)) ))
+				else if ((normalized_vc == (player1_x*48+46)) && ((normalized_hc == (player1_y*64+24)) || (normalized_hc == (player1_y*64+38)) ))
+					pixel_crt <= 8;        
+				else if ((normalized_vc == (player1_x*48+47)) && ((normalized_hc == (player1_y*64+23)) || (normalized_hc == (player1_y*64+39)) ))
 					pixel_crt <= 8;
 			end
 			
