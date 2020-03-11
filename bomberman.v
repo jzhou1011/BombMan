@@ -2,7 +2,7 @@ module bomberman(
     //output
     seg, an, hsync, vsync, red, green, blue,
     //input
-    clk, sw, JA, btnS, btnR, btnL, btnD, btnU
+    clk, sw, JA, btnS, btnR, btnL, btnD, btnU, RsRx, RsTx
 );
 	
     input [7:0] JA;
@@ -10,9 +10,10 @@ module bomberman(
     input btnR;
     input btnS;
     input btnL;
-    input btnU;
+    input btnU;a
     input btnD;
     input [7:0] sw;
+	 input RsRx;
 	
 /*	wire reset_sw;
 	assign reset_sw = sw[7];
@@ -26,6 +27,7 @@ module bomberman(
 */
     output [7:0] seg;
     output [3:0] an;
+	 output RsTx;
 
     // vga
     output hsync;//horizontal sync out
@@ -84,6 +86,11 @@ module bomberman(
     wire [3:0] bombB_x;
     wire [3:0] bombB_y;
     wire bombB_v;
+	 
+	 // uart
+	 wire o_tx_busy;
+	 wire [7:0] o_rx_data;
+	 wire o_rx_valid;
 
     // clocks
     clockDivider clockDivider_(
@@ -246,6 +253,18 @@ module bomberman(
         .seg        (seg), 
         .an         (an)
     );
+	 
+	 uart_top uart_(
+   .o_tx			(RsTx), 
+	.o_tx_busy	(o_tx_busy), 
+	.o_rx_data	(o_rx_data), 
+	.o_rx_valid	(o_rx_valid),
+   .i_rx			(RsRx), 
+	.i_tx_data	(arena_0), 
+	.i_tx_stb		(bomb_clk), 
+	.clk			(clk), 
+	.rst			(sw[7])
+   );
 
 
     // VGA
