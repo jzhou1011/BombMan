@@ -165,7 +165,7 @@ begin
 	// first check if we're within vertical active video range
 	if (vc >= vbp && vc <= vfp && hc >= hbp && hc <= hfp)
 	begin
-		if (game_over == 0) // check if game is still on
+		if ((game_over == 0) || (game_over == 1) || (game_over == 2) || ) // check if game is still on
 		begin
 			normalized_vc <= vc - vbp;
 			normalized_hc <= hc - hbp;
@@ -237,27 +237,53 @@ begin
 				else if ((normalized_vc == (player1_x*48+32)) && ((normalized_hc > (player1_y*64+21)) && (normalized_hc < (player1_y*64+39)) ))
 					pixel_crt <= 8;        
 										   
-				else if ((normalized_vc == (player1_x*48+40)) && ((normalized_hc == (player1_y*64+30)) || (normalized_hc == (player1_y*64+32)) ))
+				else if ((normalized_vc == (player1_x*48+40)) && ((normalized_hc == (player1_y*64+30-1)) || (normalized_hc == (player1_y*64+32-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+41)) && ((normalized_hc == (player1_y*64+29)) || (normalized_hc == (player1_y*64+33)) ))
+				else if ((normalized_vc == (player1_x*48+41)) && ((normalized_hc == (player1_y*64+29-1)) || (normalized_hc == (player1_y*64+33-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+42)) && ((normalized_hc == (player1_y*64+28)) || (normalized_hc == (player1_y*64+34)) ))
+				else if ((normalized_vc == (player1_x*48+42)) && ((normalized_hc == (player1_y*64+28-1)) || (normalized_hc == (player1_y*64+34-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+43)) && ((normalized_hc == (player1_y*64+27)) || (normalized_hc == (player1_y*64+35)) ))
+				else if ((normalized_vc == (player1_x*48+43)) && ((normalized_hc == (player1_y*64+27-1)) || (normalized_hc == (player1_y*64+35-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+44)) && ((normalized_hc == (player1_y*64+26)) || (normalized_hc == (player1_y*64+36)) ))
+				else if ((normalized_vc == (player1_x*48+44)) && ((normalized_hc == (player1_y*64+26-1)) || (normalized_hc == (player1_y*64+36-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+45)) && ((normalized_hc == (player1_y*64+25)) || (normalized_hc == (player1_y*64+37)) ))
+				else if ((normalized_vc == (player1_x*48+45)) && ((normalized_hc == (player1_y*64+25-1)) || (normalized_hc == (player1_y*64+37-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+46)) && ((normalized_hc == (player1_y*64+24)) || (normalized_hc == (player1_y*64+38)) ))
+				else if ((normalized_vc == (player1_x*48+46)) && ((normalized_hc == (player1_y*64+24-1)) || (normalized_hc == (player1_y*64+38-1)) ))
 					pixel_crt <= 8;        
-				else if ((normalized_vc == (player1_x*48+47)) && ((normalized_hc == (player1_y*64+23)) || (normalized_hc == (player1_y*64+39)) ))
+				else if ((normalized_vc == (player1_x*48+47)) && ((normalized_hc == (player1_y*64+23-1)) || (normalized_hc == (player1_y*64+39-1)) ))
 					pixel_crt <= 8;
 			end
 			
 			else if ((modulus_i == player2_x) && (modulus_j == player2_y))
 			begin
-				pixel_crt <= 6;
+				pixel_crt <= 0;
+				if(((normalized_vc < player2_x*48 + 25) && (normalized_vc >= player2_x*48)) && (normalized_hc >= (player2_y*64+15) && (normalized_hc < (player2_y*64+46))))
+					pixel_crt <= 6;
+				
+										   
+				else if (((normalized_vc < (player2_x*48+39)) && (normalized_vc > player2_x*48)) && ((normalized_hc == (player2_y*64+30)) || (normalized_hc == (player2_y*64+31)) || (normalized_hc == (player2_y*64+29))) )
+					pixel_crt <= 6;        
+										   
+				else if ((normalized_vc == (player2_x*48+32)) && ((normalized_hc > (player2_y*64+21)) && (normalized_hc < (player2_y*64+39)) ))
+					pixel_crt <= 6;        
+										   
+				else if ((normalized_vc == (player2_x*48+40)) && ((normalized_hc == (player2_y*64+30)) || (normalized_hc == (player2_y*64+32)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+41)) && ((normalized_hc == (player2_y*64+29)) || (normalized_hc == (player2_y*64+33)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+42)) && ((normalized_hc == (player2_y*64+28)) || (normalized_hc == (player2_y*64+34)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+43)) && ((normalized_hc == (player2_y*64+27)) || (normalized_hc == (player2_y*64+35)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+44)) && ((normalized_hc == (player2_y*64+26)) || (normalized_hc == (player2_y*64+36)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+45)) && ((normalized_hc == (player2_y*64+25)) || (normalized_hc == (player2_y*64+37)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+46)) && ((normalized_hc == (player2_y*64+24)) || (normalized_hc == (player2_y*64+38)) ))
+					pixel_crt <= 6;        
+				else if ((normalized_vc == (player2_x*48+47)) && ((normalized_hc == (player2_y*64+23)) || (normalized_hc == (player2_y*64+39)) ))
+					pixel_crt <= 6;
 			end
 			
 			else
