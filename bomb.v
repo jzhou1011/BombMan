@@ -40,8 +40,8 @@ module bomb(
 			game_state <= 0;
         end
         else begin
-            for (x = 1; x<9; x = x+1) begin
-                for (y=1; y<9; y=y+1) begin
+            for (x = 0; x<10; x = x+1) begin
+                for (y=0; y<10; y=y+1) begin
                     // No bomb
                     if (i_curBombMap_1[10 * x + y] == 0 && i_curBombMap_0[10 * x + y] == 0) begin
                         o_updatedBombMap_0[10 * x + y] <= 0;
@@ -51,8 +51,21 @@ module bomb(
                     else if (i_curBombMap_1[10 * x + y] == 1 && i_curBombMap_0[10 * x + y] == 1) begin
                         o_updatedBombMap_0[10 * x + y] <= 0;
                         o_updatedBombMap_1[10 * x + y] <= 0;
+						if (playerAx == x && playerAy == y) begin
+							if (healthA != 0)
+                                o_healthA <= healthA - 1;
+                            else
+                                o_healthA <= 0;
+						end
+						if (playerBx == x && playerBy == y) begin
+							if (healthB != 0)
+                                o_healthB <= healthB - 1;
+                            else
+                                o_healthB <= 0;
+						end
                         // Hit player A, no repetitive damage in one cycle
                         // It player A on the same line and y coord with radius of 2
+				/*
 			    if (playerAx == x && (playerAy - y < 3 || playerAy - y > -3)) begin
                             if (healthA != 0)
                                 o_healthA <= healthA - 1;
@@ -78,6 +91,7 @@ module bomb(
                             else
                                 o_healthB <= 0;
                         end
+				*/
 			    
 			    
                     end
@@ -95,20 +109,20 @@ module bomb(
 					    o_updatedBombMap_1[(x-i)*10+y] <= 1;
 				    end
 				    if (y + i < 10) begin
-					    o_updatedBombMap_0[x+y+i] <= 1;
-					    o_updatedBombMap_1[x+y+i] <= 1;
+					    o_updatedBombMap_0[x*10+y+i] <= 1;
+					    o_updatedBombMap_1[x*10+y+i] <= 1;
 				    end
 				    if (y - i >= 0) begin
-					    o_updatedBombMap_0[x+y-i] <= 1;
-					    o_updatedBombMap_1[x+y-i] <= 1;
+					    o_updatedBombMap_0[x*10+y-i] <= 1;
+					    o_updatedBombMap_1[x*10+y-i] <= 1;
 				    end
 			    end
 			end
-                    else begin
-                        o_updatedBombMap_1[10 * x + y] <= o_updatedBombMap_0[10 * x + y] ^ o_updatedBombMap_1[10 * x + y];
-                        o_updatedBombMap_0[10 * x + y] <= ~o_updatedBombMap_0[10 * x + y];
-			    
-			
+                    else if (i_curBombMap_1[10 * x + y] == 0 && i_curBombMap_0[10 * x + y] == 1) begin
+                        //o_updatedBombMap_1[10 * x + y] <= o_updatedBombMap_0[10 * x + y] ^ o_updatedBombMap_1[10 * x + y];
+                        //o_updatedBombMap_0[10 * x + y] <= ~o_updatedBombMap_0[10 * x + y];
+						o_updatedBombMap_1[10 * x + y] <= 1;
+                        o_updatedBombMap_0[10 * x + y] <= 0;
                     end
 					
                 end
