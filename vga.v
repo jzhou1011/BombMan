@@ -288,11 +288,30 @@ begin
 			
 			else
 			begin
-				pixel_crt <= Arena[modulus_i][modulus_j];
-				if (pixel_crt == 0)
-				begin
+				if (Arena[modulus_i][modulus_j] == 0) begin
+					pixel_crt <= 0;
 					if (Bomb[modulus_i][modulus_j] != 0)
 						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
+				end
+				else begin
+					pixel_crt <= 9; // change color later
+					if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+13)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+26)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+39)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= modulus_i*48) && (normalized_vc < modulus_i*48+48) && (normalized_hc == (modulus_j*64+52)))
+						pixel_crt <= 8;
+
+					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+9)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+19)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+29)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= modulus_j*64) && (normalized_hc < modulus_j*64+64) && (normalized_vc == (modulus_i*48+39)))
+						pixel_crt <= 8;
 				end
 			end
 			
@@ -334,6 +353,8 @@ begin
 			6:  begin red <= 3'b000; green <= 3'b000; blue <= 2'b11; end // player2
 			7:  begin red <= 3'b000; green <= 3'b100; blue <= 2'b00; end // ??
 			8: begin red <= 0; green <= 0; blue <= 0; end
+			// new color
+			9: begin red <= 3'b110; green <= 3'b010; blue <= 2'b00; end 
 			endcase
 		end
 		
