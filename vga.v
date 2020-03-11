@@ -256,6 +256,14 @@ begin
 				
 				else if ((normalized_vc == (player1_x*48+6)) && ((normalized_hc == (player1_y*64+24)) || (normalized_hc == (player1_y*64+32)) ))
 					pixel_crt <= 0;
+
+				else if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+30)) ))
+					pixel_crt <= 0;
+
+				else if ((normalized_vc >= (player1_x*48+6)) && ((normalized_vc < (player1_x*48+14)) && (normalized_hc == (player1_y*64+34)) ))
+					pixel_crt <= 0;
+
+				
 					
 				if (game_over == 3)begin
 					if ((normalized_vc == (player1_x*48+17)) && ((normalized_hc >= (player1_y*64 + 25)) && (normalized_hc < (player1_y*64 + 35))))
