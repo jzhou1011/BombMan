@@ -303,6 +303,8 @@ begin
 						pixel_crt <= 8;
 					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+52)))
 						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64)))
+						pixel_crt <= 8;
 
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+9)))
 						pixel_crt <= 8;
@@ -311,6 +313,8 @@ begin
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+29)))
 						pixel_crt <= 8;
 					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+39)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48)))
 						pixel_crt <= 8;
 				end
 			end
