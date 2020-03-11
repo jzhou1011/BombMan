@@ -68,6 +68,7 @@ module chara_control(
 	end	
 	
 	reg [3:0] temp [0:1];
+	reg [3:0] tempB [0:1];
 	
 	reg temp_Arena [0:9][0:9];
 	
@@ -76,9 +77,9 @@ module chara_control(
 	always @ (posedge clk) begin
 	
 		if (rst) begin
-			o_playerAx <= 5;
+			o_playerAx <= 1;
 			o_playerBx <= 8;
-			o_playerAy <= 5;
+			o_playerAy <= 1;
 			o_playerBy <= 8;
 		end
 			
@@ -114,42 +115,42 @@ module chara_control(
 			end
 		
 			if (playerB == 4'b0010) begin // 2
-				temp[0] <= playerBx - 1;
-				temp[1] <= playerBy;
-				if (temp[0] >= 0 && Arena[temp[0]][temp[1]] == 0 && Bomb[temp[0]][temp[1]] == 0) 
+				tempB[0] <= playerBx - 1;
+				tempB[1] <= playerBy;
+				if (tempB[0] >= 0 && Arena[tempB[0]][tempB[1]] == 0 && Bomb[tempB[0]][tempB[1]] == 0) 
 				begin
-					o_playerBx <= temp[0];
-					o_playerBy <= temp[1];
+					o_playerBx <= tempB[0];
+					o_playerBy <= tempB[1];
 				end
 			end
 			
 			if (playerB == 4'b1000) begin // 8
-				temp[0] <= playerBx + 1;
-				temp[1] <= playerBy;
-				if (temp[0] < 10 && Arena[temp[0]][temp[1]] == 0 && Bomb[temp[0]][temp[1]] == 0) 
+				tempB[0] <= playerBx + 1;
+				tempB[1] <= playerBy;
+				if (tempB[0] < 10 && Arena[tempB[0]][tempB[1]] == 0 && Bomb[tempB[0]][tempB[1]] == 0) 
 				begin
-					o_playerBx <= temp[0];
-					o_playerBy <= temp[1];
+					o_playerBx <= tempB[0];
+					o_playerBy <= tempB[1];
 				end
 			end
 			
 			if (playerB == 4'b0100) begin // 4
-				temp[0] <= playerBx;
-				temp[1] <= playerBy - 1;
-				if (temp[1] >= 0 && Arena[temp[0]][temp[1]] == 0 && Bomb[temp[0]][temp[1]] == 0) 
+				tempB[0] <= playerBx;
+				tempB[1] <= playerBy - 1;
+				if (tempB[1] >= 0 && Arena[tempB[0]][tempB[1]] == 0 && Bomb[tempB[0]][tempB[1]] == 0) 
 				begin
-					o_playerBx <= temp[0];
-					o_playerBy <= temp[1];
+					o_playerBx <= tempB[0];
+					o_playerBy <= tempB[1];
 				end
 			end
 			
 			if (playerB == 4'b0110) begin // 6
-				temp[0] <= playerBx;
-				temp[1] <= playerBy + 1;
-				if (temp[1] < 10 && Arena[temp[0]][temp[1]] == 0 && Bomb[temp[0]][temp[1]] == 0) 
+				tempB[0] <= playerBx;
+				tempB[1] <= playerBy + 1;
+				if (tempB[1] < 10 && Arena[tempB[0]][tempB[1]] == 0 && Bomb[tempB[0]][tempB[1]] == 0) 
 				begin
-					o_playerBx <= temp[0];
-					o_playerBy <= temp[1];
+					o_playerBx <= tempB[0];
+					o_playerBy <= tempB[1];
 				end
 			end
 		

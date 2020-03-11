@@ -5,7 +5,7 @@ module bomberman(
     clk, sw, JA, btnS, btnR, btnL, btnD, btnU//, RsRx, RsTx
 );
 	
-    input [7:0] JA;
+    inout [7:0] JA;
     input clk;
     input btnR;
     input btnS;
@@ -37,7 +37,7 @@ module bomberman(
     output [1:0] blue; //blue vga output
 
     // player1: use keypad to control character
-    wire [3:0] playerBinput;  
+    wire [3:0] playerBinput;
 
     // player2: use buttons to control character
     wire btnS_crt;
@@ -151,7 +151,7 @@ module bomberman(
     keypad keypad_(
         .clk    (clk),
         .row    (JA[7:4]),
-	    //.col    (JA[3:0]),
+	    .col    (JA[3:0]),
         .decode (playerBinput)
     );
 
