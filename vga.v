@@ -146,10 +146,10 @@ begin
 		if (game_over == 0) // check if game is still on
 		begin
 			normalized_vc <= vc - vbp;
-			normalized_hc <= hc - vbp;
+			normalized_hc <= hc - hbp;
 			
-			modulus_i <= vc / block_wid;
-			modulus_j <= hc / block_len;
+			modulus_i <= normalized_vc / block_wid;
+			modulus_j <= normalized_hc / block_len;
 			
 			if (modulus_i == player1_x && modulus_j == player1_y)
 			begin
