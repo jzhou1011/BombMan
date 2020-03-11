@@ -175,46 +175,13 @@ begin
 			
 			//modulus_i <= normalized_vc / block_wid;
 			//modulus_j <= normalized_hc/ block_len;
-
-		
-				if (Arena[modulus_i][modulus_j] == 0) begin
-					pixel_crt <= 0;
-					if (Bomb[modulus_i][modulus_j] != 0)
-						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
-				end
-				else begin
-					pixel_crt <= 9; // change color later
-					if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+13)))
-						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+26)))
-						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+39)))
-						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+52)))
-						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64)))
-						pixel_crt <= 8;
-					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+63)))
-						pixel_crt <= 8;
-
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+9)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+19)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+29)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+39)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48)))
-						pixel_crt <= 8;
-					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+47)))
-						pixel_crt <= 8;
-				end
 			
 			if ((modulus_i == player1_x) && (modulus_j == player1_y))
 			begin
 				pixel_crt <= 0;
-				if((normalized_vc == player1_x*48) && (normalized_hc == (player1_y*64+30)))
+				if (Bomb[modulus_i][modulus_j] != 0)
+						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
+				else if((normalized_vc == player1_x*48) && (normalized_hc == (player1_y*64+30)))
 					pixel_crt <= 8;
 				else if ((normalized_vc == (player1_x*48+1)) && ((normalized_hc > (player1_y*64+28)) && (normalized_hc < (player1_y*64+32)) ))
 					pixel_crt <= 8;
@@ -321,7 +288,9 @@ begin
 			else if ((modulus_i == player2_x) && (modulus_j == player2_y))
 			begin
 				pixel_crt <= 0;
-				if(((normalized_vc < player2_x*48 + 25) && (normalized_vc >= player2_x*48)) && (normalized_hc >= (player2_y*64+15) && (normalized_hc < (player2_y*64+46))))
+				if (Bomb[modulus_i][modulus_j] != 0)
+						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
+				else if(((normalized_vc < player2_x*48 + 25) && (normalized_vc >= player2_x*48)) && (normalized_hc >= (player2_y*64+15) && (normalized_hc < (player2_y*64+46))))
 					pixel_crt <= 6;
 				
 										   
@@ -353,7 +322,6 @@ begin
 				// eyes
 				if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+27)) ))
 					pixel_crt <= 0;
-
 				if ((normalized_vc >= (player2_x*48+6)) && ((normalized_vc < (player2_x*48+14)) && (normalized_hc == (player2_y*64+37)) ))
 					pixel_crt <= 0;
 				
@@ -371,6 +339,43 @@ begin
 						pixel_crt <= 0;
 					else if ((normalized_vc == (player2_x*48+20)) && ((normalized_hc >= (player2_y*64 + 31)) && (normalized_hc < (player2_y*64 + 32))))
 						pixel_crt <= 0;
+				end
+			end
+			
+			else
+			begin
+				if (Arena[modulus_i][modulus_j] == 0) begin
+					pixel_crt <= 0;
+					if (Bomb[modulus_i][modulus_j] != 0)
+						pixel_crt <= Bomb[modulus_i][modulus_j] + 1; // 3;
+				end
+				else begin
+					pixel_crt <= 9; // change color later
+					if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+13)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+26)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+39)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+52)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64)))
+						pixel_crt <= 8;
+					else if ((normalized_vc >= (modulus_i*48)) && (normalized_vc < (modulus_i*48+48)) && (normalized_hc == (modulus_j*64+63)))
+						pixel_crt <= 8;
+
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+9)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+19)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+29)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+39)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48)))
+						pixel_crt <= 8;
+					else if ((normalized_hc >= (modulus_j*64)) && (normalized_hc < (modulus_j*64+64)) && (normalized_vc == (modulus_i*48+47)))
+						pixel_crt <= 8;
 				end
 			end
 			
