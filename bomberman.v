@@ -2,7 +2,7 @@ module bomberman(
     //output
     seg, an, hsync, vsync, red, green, blue,
     //input
-    clk, sw, JA, btnS, btnR, btnL, btnD, btnU, RsRx, RsTx
+    clk, sw, JA, btnS, btnR, btnL, btnD, btnU//, RsRx, RsTx
 );
 	
     input [7:0] JA;
@@ -10,10 +10,10 @@ module bomberman(
     input btnR;
     input btnS;
     input btnL;
-    input btnU;a
+    input btnU;
     input btnD;
     input [7:0] sw;
-	 input RsRx;
+	 //input RsRx;
 	
 /*	wire reset_sw;
 	assign reset_sw = sw[7];
@@ -27,7 +27,7 @@ module bomberman(
 */
     output [7:0] seg;
     output [3:0] an;
-	 output RsTx;
+	 //output RsTx;
 
     // vga
     output hsync;//horizontal sync out
@@ -76,8 +76,8 @@ module bomberman(
     wire bomb_clk; // 1 Hz
     wire vga_clk; // 500 Hz
     wire faster_clk; // seven segment display
+	 wire char_clk;  // 4Hz clock for character movement
 
-    genvar i; // for initialize
 
     // for bomb locations
     wire [3:0] bombA_x;
@@ -98,7 +98,8 @@ module bomberman(
         .rst        (sw[7]),
 	    .oneHzClock	(bomb_clk),
 	    .VGAClock	(vga_clk),
-        .segClock (faster_clk)
+        .segClock (faster_clk),
+		  .charClock (char_clk)
     );
 
     // //initialize health
@@ -106,12 +107,14 @@ module bomberman(
     // assign playerBhealth = 3;
 
     // initialize arena and bombs
-	
-    for (i = 0; i < 100; i = i+1) begin
+	generate
+	genvar i;
+    for (i = 0; i < 100; i = i+1) begin : g
             assign arena_0[i] = o_arena_0[i];
 			assign bombs_0[i] = o_bombs_0[i];
 			assign bombs_1[i] = o_bombs_1[i];
     end
+	endgenerate
 	
 	assign playerAx = o_playerAx;
     assign playerAy = o_playerAy;
@@ -209,7 +212,7 @@ module bomberman(
 		.bombB_v	(bombB_v),
         .Bomb_bit0  (bombs_0),
 	    .Bomb_bit1  (bombs_1),
-        .clk        (clk),
+        .clk        (char_clk),
 	    .crt_Arena_bit0  (o_arena_0),
         .playerAx   (playerAx),
 	    .playerAy   (playerAy),
@@ -253,7 +256,7 @@ module bomberman(
         .seg        (seg), 
         .an         (an)
     );
-	 
+	/* 
 	 uart_top uart_(
    .o_tx			(RsTx), 
 	.o_tx_busy	(o_tx_busy), 
@@ -265,7 +268,7 @@ module bomberman(
 	.clk			(clk), 
 	.rst			(sw[7])
    );
-
+*/
 
     // VGA
     vga640x480 vga_(

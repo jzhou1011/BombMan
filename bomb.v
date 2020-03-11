@@ -29,8 +29,8 @@ module bomb(
 
     always @ (posedge bombClk) begin
         if (rst) begin
-            for (x = 1; x<9; x = x+1) begin
-                for (y=1; y<9; y=y+1) begin
+            for (x = 0; x<10; x = x+1) begin
+                for (y=0; y<10; y=y+1) begin
                     o_updatedBombMap_0[10 * x + y] <= 0;
                     o_updatedBombMap_1[10 * x + y] <= 0;
                 end
@@ -84,7 +84,7 @@ module bomb(
                     // Bomb state advancing
 			else if (i_curBombMap_1[10 * x + y] == 1 && i_curBombMap_0[10 * x + y] == 0) 
 			begin
-			    for (i = 1; i <= 3; i = i+1)
+			    for (i = 0; i < 3; i = i+1)
 			    begin
 				    if (x + i < 10) begin
 					    o_updatedBombMap_0[(x+i)*10+y] <= 1;

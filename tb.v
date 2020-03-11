@@ -1,3 +1,4 @@
+  
 `timescale 1ns/1ps
 
 module test;
@@ -11,6 +12,9 @@ module test;
     reg [7:0] seg;
     reg [3:0] an;
 	 reg [7:0] sw;
+	 
+	 localparam bombperiod = 100000;//100000000;
+	 localparam debopeirod = 10000;
 
     bomberman uut(
         .seg(seg), .an(an), .clk(clk), .hsync(hsync),
@@ -37,19 +41,29 @@ module test;
 		#100;
 
         // Add stimulus here
-        #50
         sw[7] = 1;
 		  $display("sw is now 1");
-        #300000
+        #100000 // bomb period
         sw[7] = 0;
 		  $display("sw is now 0");
         // Start game
-        #100
+        #3000
         // Player A drops bomb at current position
         tskADropBomb;
         tskBDropBomb;
-		  #100
+		  #300000 //3 * bomb period
+		  tskAMovesD;
+		  #1000
+		  tskAMovesD;
+		  #1000
+		  tskAMovesR;
+		  #1000
+		  tskAMovesU;
+		  #1000
+		  tskADropBomb;
+		  #300000 //3 * bomb period
         $display("Check: player A and B should both have health of 2 now.");
+		  
 		  $finish;
 	 end
 
@@ -59,7 +73,7 @@ module test;
         begin
             $display("...Player A drops a bomb");
             btnS = 1;
-            #200
+            #200000 //2*bomb period
             btnS = 0;
         end
     endtask
@@ -68,9 +82,43 @@ module test;
         begin
             $display("...Player B drops a bomb");
             JA = 8'b10110000;
-            #200
+            #200000 //2*bomb period
             JA = 8'b00010000;
         end
     endtask
-
+	 
+	 task tskAMovesD;
+			begin
+				$display("...Player A moves down");
+				btnD = 1;
+				#150000
+				btnD = 0;
+			end
+	 endtask
+				
+	 task tskAMovesR;
+			begin
+				$display("...Player A moves right");
+				btnR = 1;
+				#150000
+				btnR = 0;
+			end
+	 endtask
+	 task tskAMovesU;
+			begin
+				$display("...Player A moves up");
+				btnU = 1;
+				#150000
+				btnU = 0;
+			end
+	 endtask
+	 
+	 task tskAMovesL;
+			begin
+				$display("...Player A moves left");
+				btnL = 1;
+				#150000
+				btnL = 0;
+			end
+	 endtask
 endmodule

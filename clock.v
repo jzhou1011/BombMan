@@ -5,7 +5,7 @@ module clockDivider(
     // Inputs
     clk, rst,
     // Outputs
-    VGAClock, segClock, oneHzClock
+    VGAClock, segClock, oneHzClock, charClock
 );
 
     input clk;
@@ -13,20 +13,25 @@ module clockDivider(
     output VGAClock;
     output segClock;
     output oneHzClock;
+	 output charClock;
 
-    reg [31:0] VGACounter, segCounter, oneHzCounter;
-    reg VGATemp, segTemp, oneHzTemp;
-
+    reg [31:0] VGACounter = 0;
+	 reg [31:0] segCounter = 0;
+	 reg [31:0] oneHzCounter = 0;
+	 reg [31:0] charCounter = 0;
+    reg VGATemp = 0;
+	 reg segTemp = 0;
+	 reg oneHzTemp = 0;
+	 reg charTemp = 0;
+	 
+	 localparam test = 1;
     localparam VGA_MOD = 2; // 25MHz
-    localparam SEG_MOD = 100000; // 500Hz
-    localparam ONE_HZ_MOD = 100000000/2; // 1Hz
+    localparam SEG_MOD = 100000/(test*1000); // 500Hz
+    localparam ONE_HZ_MOD = 10000000/(test*2000); // 1Hz
+	 localparam CHAR_MOD = 10000000/(test*8000); // 4Hz
 
-    always @ (posedge clk or posedge rst) begin
-        if (rst == 1) begin
-            VGACounter <= 0;
-            VGATemp <= 0;
-        end
-        else if (VGACounter == VGA_MOD-1) begin
+    always @ (posedge clk) begin
+        if (VGACounter == VGA_MOD-1) begin
             VGACounter <= 0;
             VGATemp <= ~VGAClock;
         end
@@ -36,12 +41,8 @@ module clockDivider(
         end
     end
 
-    always @ (posedge clk or posedge rst) begin
-        if (rst == 1) begin
-            segCounter <= 0;
-            segTemp <= 0;
-        end
-        else if (segCounter == SEG_MOD-1) begin
+    always @ (posedge clk) begin
+        if (segCounter == SEG_MOD-1) begin
             segCounter <= 0;
             segTemp <= ~segClock;
         end
@@ -51,12 +52,8 @@ module clockDivider(
         end
     end
 
-    always @ (posedge clk or posedge rst) begin
-        if (rst == 1) begin
-            oneHzCounter <= 0;
-            oneHzTemp <= 0;
-        end
-        else if (oneHzCounter == ONE_HZ_MOD-1) begin
+    always @ (posedge clk) begin
+        if (oneHzCounter == ONE_HZ_MOD-1) begin
             oneHzCounter <= 0;
             oneHzTemp <= ~oneHzTemp;
         end
@@ -65,9 +62,21 @@ module clockDivider(
             oneHzTemp <= oneHzClock;
         end
     end
+	 
+	 always @ (posedge clk) begin
+        if (charCounter == CHAR_MOD-1) begin
+            charCounter <= 0;
+            charTemp <= ~charClock;
+        end
+        else begin
+            charCounter <= charCounter + 1;
+            charTemp <= charClock;
+        end
+    end
 
     assign segClock = segTemp;
     assign VGAClock = VGATemp;
     assign oneHzClock = oneHzTemp;
+	 assign charClock = charTemp;
 
 endmodule
