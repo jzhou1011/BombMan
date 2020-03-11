@@ -24,11 +24,11 @@ module clockDivider(
 	 reg oneHzTemp = 0;
 	 reg charTemp = 0;
 	 
-	 localparam test = 1;
+	 localparam test = 0;
     localparam VGA_MOD = 2; // 25MHz
-    localparam SEG_MOD = 100000/(test*1000); // 500Hz
-    localparam ONE_HZ_MOD = 10000000/(test*2000); // 1Hz
-	 localparam CHAR_MOD = 10000000/(test*8000); // 4Hz
+    localparam SEG_MOD = 100000/(1+test*999); // 500Hz
+    localparam ONE_HZ_MOD = 100000000/(2+test*1998); // 1Hz
+	 localparam CHAR_MOD = 10000000/(8+test*7992); // 4Hz
 
     always @ (posedge clk) begin
         if (VGACounter == VGA_MOD-1) begin
