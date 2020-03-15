@@ -42,11 +42,11 @@ input [99:0] Bomb_bit1,
 
 input [1:0] game_over, // three values: player 1 win, player 2 win, draw
 
-output wire hsync, //horizontal sync out
-output wire vsync, //vertical sync out
-output reg [2:0] red, //red vga output
-output reg [2:0] green, //green vga output
-output reg [1:0] blue //blue vga output
+output wire hsync, 
+output wire vsync, 
+output reg [2:0] red, 
+output reg [2:0] green, 
+output reg [1:0] blue 
 );
 	
 parameter width = 480;
@@ -106,18 +106,16 @@ begin
 	end
 end	
 
-// video structure constants
-parameter hpixels = 800;//800;// horizontal pixels per line
-parameter vlines = 521;//521; // vertical lines per frame
-parameter hpulse = 96; 	// hsync pulse length
-parameter vpulse = 2; 	// vsync pulse length
-parameter hbp = 120; 	// end of horizontal back porch
-parameter hfp = hbp + length; 	// beginning of horizontal front porch
-parameter vbp = 61; 		// end of vertical back porch
-parameter vfp = vbp + width; 	// beginning of vertical front porch
 
-// active horizontal video is therefore: 784 - 144 = 640
-// active vertical video is therefore: 511 - 31 = 480
+parameter hpixels = 800;
+parameter vlines = 521;
+parameter hpulse = 96; 
+parameter vpulse = 2; 
+parameter hbp = 120; 
+parameter hfp = hbp + length; 
+parameter vbp = 61; 		
+parameter vfp = vbp + width; 
+
 reg [9:0] hc;
 reg [9:0] vc;
 
@@ -125,7 +123,7 @@ reg [9:0] vc;
 
 always @(posedge pixel_clk or posedge rst)
 begin
-	// reset condition
+	// reset
 	if (rst == 1)
 	begin
 		hc <= 0;
