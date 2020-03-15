@@ -383,7 +383,6 @@ begin
 			//1:  begin red <= 3'b110; green <= 3'b010; blue <= 2'b11; end // block color
 			
 			2:  begin red <= 3'b101; green <= 3'b001; blue <= 2'b11; end // bomb1
-			//
 			/*2: begin
 			paint_char paint_char1(
 			.hc (hc),
@@ -395,7 +394,6 @@ begin
 			.green (green), //green vga output
 			.blue (blue) //blue vga output
 			);end*/
-			////////
 			3:  begin red <= 3'b100; green <= 3'b000; blue <= 2'b11; end // bomb2
 			//
 			/*3: begin
