@@ -149,7 +149,7 @@ module bomberman(
         .rst        (sw[7])
     );
 
-    LFSR random(
+    psdrdm random(
 	.clock	(char_clk),
 	.reset	(sw[7]),
 	.rnd    (playerBinput)
