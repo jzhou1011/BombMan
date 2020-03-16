@@ -2,13 +2,12 @@
 module psdrdm (
     input clock,
     input reset,
-    input reg [12:0] random,
     output [3:0] rnd 
     );
  
 wire feedback = random[12] ^ random[7] ^ random[5] ^ random[3] ^ random[0]; 
  
-reg [12:0] random_next, random_done;
+reg [12:0] random_next, random_done, random;
 reg [3:0] count, count_next; //to keep track of the shifts
 reg [3:0] final_num;
 reg temp;

@@ -37,29 +37,47 @@ module test;
         btnD = 0;
 
         // Wait 100 ns for global reset to finish
-		#100;
+		#1000;
 
         // Add stimulus here
         sw[7] = 1;
 		  $display("sw is now 1");
-        #100000 // bomb period
+        #50000
         sw[7] = 0;
 		  $display("sw is now 0");
         // Start game
         #3000
         // Player A drops bomb at current position
-        tskADropBomb;
-		  #300000 //3 * bomb period
+        // tskADropBomb;
 		  tskAMovesD;
-		  #1000
+		  #10000
 		  tskAMovesD;
-		  #1000
+		  #10000
+		  tskAMovesD;
+		  #10000
 		  tskAMovesR;
-		  #1000
-		  tskAMovesU;
-		  #1000
+		  #10000
+		  tskAMovesR;
+		  #10000
+		  tskAMovesR;
+		  #10000
+		  tskAMovesR;
+		  #10000
+		  tskAMovesD;
+		  #10000
+		  tskAMovesD;
+		  #10000
+		  tskAMovesD;
+		  #10000
+		  tskAMovesD;
+		  #10000
+		  tskAMovesR;
+		  #10000
 		  tskADropBomb;
-		  #300000 //3 * bomb period
+		  tskADropBomb;
+		  tskADropBomb;
+		  #200000
+		  // tskADropBomb;
         $display("Check: player A and B should both have health of 2 now.");
 		  
 		  $finish;
@@ -73,6 +91,7 @@ module test;
             btnS = 1;
             #200000 //2*bomb period
             btnS = 0;
+				#300000; //3 * bomb period
         end
     endtask
 
@@ -82,7 +101,7 @@ module test;
 			begin
 				$display("...Player A moves down");
 				btnD = 1;
-				#150000
+				#200000
 				btnD = 0;
 			end
 	 endtask
@@ -91,7 +110,7 @@ module test;
 			begin
 				$display("...Player A moves right");
 				btnR = 1;
-				#150000
+				#200000
 				btnR = 0;
 			end
 	 endtask
@@ -99,7 +118,7 @@ module test;
 			begin
 				$display("...Player A moves up");
 				btnU = 1;
-				#150000
+				#200000
 				btnU = 0;
 			end
 	 endtask
@@ -108,7 +127,7 @@ module test;
 			begin
 				$display("...Player A moves left");
 				btnL = 1;
-				#150000
+				#200000
 				btnL = 0;
 			end
 	 endtask

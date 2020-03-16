@@ -157,7 +157,7 @@ reg [9:0] normalized_vc; // These are just for us to better retrieve value from 
 reg [9:0] normalized_hc;
 
 
-always @(*)
+always @(pixel_clk)
 begin
 
 	// first check if we're within vertical active video range

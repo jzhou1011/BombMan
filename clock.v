@@ -27,7 +27,7 @@ module clockDivider(
 	 localparam test = 0;
     localparam VGA_MOD = 2; // 25MHz
     localparam SEG_MOD = 100000/(1+test*999); // 500Hz
-    localparam ONE_HZ_MOD = 100000000/(2+test*1998); // 1Hz
+    localparam ONE_HZ_MOD = 100000000/(2+test*19998); // 1Hz
 	 localparam CHAR_MOD = 5000000/(2+test*1998); // 10Hz
 
     always @ (posedge clk) begin
